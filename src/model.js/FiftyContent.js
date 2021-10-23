@@ -1,7 +1,8 @@
 import React, { useState, useContext, useEffect } from "react";
-import fetchData, { options } from "./fetchOptions";
+import { options } from "./fetchOptions";
 import axios from "axios";
-import { formatName } from "../utils.js/formating";
+import { formatData } from "../utils.js/formatData";
+import { res } from "./responseData";
 const FiftyContext = React.createContext();
 
 export const FiftyProvider = ({ children }) => {
@@ -10,11 +11,13 @@ export const FiftyProvider = ({ children }) => {
 
   const fetchData = async (options) => {
     setIsloading(true);
+    /////////fetching starts
     const res = await axios.get(
       "https://yh-finance.p.rapidapi.com/market/v2/get-quotes",
       options
     );
-    const fiftyFilteredInfo = res.data.quoteResponse.result.map((stock) => {
+    /////////fetching ends
+    const filteredData = res.data.quoteResponse.result.map((stock) => {
       const stockInfo = {
         shortName: stock.shortName,
         regularMarketPrice: stock.regularMarketPrice,
@@ -26,12 +29,13 @@ export const FiftyProvider = ({ children }) => {
         fiftyTwoWeekLowChangePercent: stock.fiftyTwoWeekLowChangePercent,
         symbol: stock.symbol,
         marketCap: stock.marketCap,
+        regularMarketChangePercent: stock.regularMarketChangePercent,
       };
-      stockInfo.shortName = formatName(stockInfo);
 
       return stockInfo;
     });
-    setFiftyStocks(fiftyFilteredInfo);
+
+    setFiftyStocks(formatData(filteredData));
     setIsloading(false);
   };
 

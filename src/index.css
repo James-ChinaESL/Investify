@@ -1,0 +1,28 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Raleway&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Zen+Kurenaido&display=swap");
+:root {
+  --body-gradient: linear-gradient(
+    0deg,
+    rgba(52, 62, 89, 1) 0%,
+    rgba(58, 64, 74, 1) 100%
+  );
+  --clr-white: #fafafa;
+}
+
+*,
+::after,
+::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html {
+  font-size: 62.5%;
+}
+body {
+  font-family: "Raleway", sans-serif;
+  color: var(--clr-white);
+  background: var(--body-gradient);
+  background-repeat: no-repeat;
+}

@@ -1,9 +1,5 @@
 import React from "react";
-import Fifty from "./pages/Fifty";
+import Table from "./pages/Table";
 export default function App(props) {
-  return (
-    <div>
-      <Fifty />
-    </div>
-  );
+  return <Table />;
 }
