@@ -2,12 +2,26 @@ import React from "react";
 import { useFiftyContext } from "../model.js/FiftyContent";
 import Row from "../components/Row";
 import styled from "styled-components";
+import HeaderForTable from "../components/HeaderForTable";
 
-export default function Fifty() {
+export default function Table() {
   const { fiftyStocks } = useFiftyContext();
+  let stocksToProps = fiftyStocks;
+  const sortByName = (stocks) => {};
+  const sortByCap = (stocks) => {};
+  const sortByPrice = (stocks) => {};
+  const sortByToday = (stocks) => {};
+  const sortByYearRange = (stocks) => {};
 
   return (
     <Wrapper>
+      <HeaderForTable
+        sortByName={sortByName}
+        sortByCap={sortByCap}
+        sortByPrice={sortByPrice}
+        sortByToday={sortByToday}
+        sortByYearRange={sortByYearRange}
+      />
       <div className='table'>
         {fiftyStocks.map((company, i) => {
           return <Row {...company} key={i + 1} i={i + 1}></Row>;
@@ -19,13 +33,12 @@ export default function Fifty() {
 
 const Wrapper = styled.div`
   .table {
-    font-size: 1.6rem;
+    font-size: 2rem;
     display: grid;
-    grid-template-columns: 98%;
-    grid-auto-columns: max-content;
+    grid-template-columns: 95%;
+    grid-auto-rows: min-content;
     justify-content: center;
-    gap: 5px;
-    // background-color: #2b2d3e;
+    gap: 2px;
     background-color: transparent;
   }
 `;

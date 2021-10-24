@@ -1,42 +1,3 @@
-const filteredDataItem = {
-  shortName: "Apple Inc.",
-  regularMarketPrice: 148.69,
-  currency: "USD",
-  fiftyTwoWeekLow: 107.32,
-  fiftyTwoWeekHigh: 157.26,
-  fiftyTwoWeekHighChangePercent: -0.054495692,
-  fiftyTwoWeekLowChangePercent: 0.3854827,
-  symbol: "AAPL",
-  marketCap: 2457875513344,
-  regularMarketChangePercent: -0.5284943,
-};
-const testArray = [
-  {
-    shortName: "Apple Inc.",
-    regularMarketPrice: 148.69,
-    currency: "USD",
-    fiftyTwoWeekLow: 107.32,
-    fiftyTwoWeekHigh: 157.26,
-    fiftyTwoWeekHighChangePercent: -0.054495692,
-    fiftyTwoWeekLowChangePercent: 0.3854827,
-    symbol: "AAPL",
-    marketCap: 2457875513344,
-    regularMarketChangePercent: -0.5284943,
-  },
-  {
-    shortName: "Microsoft Corporation",
-    regularMarketPrice: 309.16,
-    currency: "USD",
-    fiftyTwoWeekLow: 199.62,
-    fiftyTwoWeekHigh: 311.09,
-    fiftyTwoWeekHighChangePercent: -0.006203969,
-    fiftyTwoWeekLowChangePercent: 0.54874265,
-    symbol: "MSFT",
-    marketCap: 2321142251520,
-    regularMarketChangePercent: -0.51486874,
-  },
-];
-
 export const formatData = (stocks) => {
   return stocks.map((stock) => {
     return {
@@ -74,7 +35,7 @@ const formatName = (stock) => {
       stockName = "Walt Disney";
       break;
     case "JNJ":
-      stockName = "Johnson & Johnson";
+      stockName = "Johnson";
       break;
     case "IBM":
       stockName = "IBM";
@@ -86,7 +47,10 @@ const formatName = (stock) => {
       stockName = "HP";
       break;
     case "MDB":
-      stockName = " MongoDB";
+      stockName = "MongoDB";
+      break;
+    case "JNJ":
+      stockName = "Johnson";
       break;
     default:
       break;
@@ -100,6 +64,3 @@ const formatMarketCap = (stock) => {
     return `${(stock.marketCap / 10 ** 9).toFixed(2)} B`;
   }
 };
-const testFormated = formatData(testArray);
-console.log(testFormated);
-console.log(testArray);

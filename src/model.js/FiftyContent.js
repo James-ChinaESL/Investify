@@ -12,10 +12,12 @@ export const FiftyProvider = ({ children }) => {
   const fetchData = async (options) => {
     setIsloading(true);
     /////////fetching starts
-    const res = await axios.get(
-      "https://yh-finance.p.rapidapi.com/market/v2/get-quotes",
-      options
-    );
+    // const res = await axios.get(
+    //   "https://yh-finance.p.rapidapi.com/market/v2/get-quotes",
+    //   options
+    // );
+    // console.log(res);
+
     /////////fetching ends
     const filteredData = res.data.quoteResponse.result.map((stock) => {
       const stockInfo = {
@@ -30,6 +32,7 @@ export const FiftyProvider = ({ children }) => {
         symbol: stock.symbol,
         marketCap: stock.marketCap,
         regularMarketChangePercent: stock.regularMarketChangePercent,
+        targetPriceMean: stock.targetPriceMean,
       };
 
       return stockInfo;

@@ -1,14 +1,16 @@
 import React from "react";
 import styled from "styled-components";
+import PriceSlider from "./Price-slider";
 function Row({
   shortName,
-  currency,
-  fiftyTwoWeekHigh,
-  fiftyTwoWeekHighChangePercent,
-  fiftyTwoWeekLow,
-  fiftyTwoWeekLowChangePercent,
+  fiftyTwoWeekHigh: high,
+  fiftyTwoWeekHighChangePercent: fromHigh,
+  fiftyTwoWeekLow: low,
+  fiftyTwoWeekLowChangePercent: fromLow,
   marketCap,
-  regularMarketPrice,
+  regularMarketPrice: price,
+  targetPriceMean: target,
+  regularMarketChangePercent: change,
   symbol,
   i,
 }) {
@@ -16,7 +18,7 @@ function Row({
     <Wrapper>
       <div className='table__row'>
         <div className='rank'>{i}</div>
-        <div className='main_info'>
+        <div className='join'>
           <div className='image-container'>
             <img
               className='company-logo'
@@ -24,43 +26,104 @@ function Row({
               alt={`${shortName}_logo`}
             />
           </div>
-          <div className='name-container'>
+          <a className='name-link' href='#'>
             <div className='name'> {shortName}</div>
             <div className='ticker'>{symbol}</div>
-          </div>
+          </a>
         </div>
-        <div className='cap-container'>{}</div>
-        <div className='price'></div>
-        <div className='high-low'></div>
+        <div className='market-cap'>${marketCap}</div>
+        <div className='price'>${price}</div>
+        <div className={`day-change ${change > 0 ? "green" : "red"}`}>
+          {change}%
+        </div>
+        <div className='price-slider'>
+          <PriceSlider low={low} high={high} price={price} />
+        </div>
       </div>
     </Wrapper>
   );
 }
 const Wrapper = styled.div`
   .table__row {
-    /* width: 100vw; */
     display: flex;
     justify-content: space-between;
     background-color: #2b2d3e;
-    .main_info {
-      .rank {
-      }
+    :hover {
+      background-color: #223144;
+    }
+    .rank,
+    .market-cap,
+    .price,
+    .day-change,
+    .company-logo,
+    .image-container {
+      font-family: "Quicksand", sans-serif;
+      vertical-align: middle;
+      line-height: 6.5rem;
+      text-align: right;
+    }
+    .rank {
+      margin-left: 1.5rem;
+      width: 2.2rem;
+    }
+    .join {
       display: flex;
       .image-container {
+        width: 4rem;
+        height: 6.5rem;
+
         .company-logo {
-          margin-top: 5px;
-          height: 32px;
-          width: 32px;
+          height: 4rem;
+          width: 4rem;
         }
       }
-      .name {
-      }
-      .ticker {
+      .name-link {
+        margin-left: 2rem;
+        width: 13.5rem;
+        text-decoration: none;
+        &,
+        &:link,
+        &:visited {
+          color: #fafafa;
+        }
+        &:hover {
+          text-decoration: underline;
+        }
+        .name {
+          margin-top: 1.5rem;
+          font-size: 2rem;
+          font-weight: 600;
+          &:hover,
+          .ticker {
+          }
+        }
+        .ticker {
+          font-size: 1.5rem;
+        }
       }
     }
-
-    .cap-container {
+    .market-cap {
+      width: 12rem;
+      text-align: right;
+      margin-left: -3rem;
+    }
+    .price {
+      width: 8.2rem;
+    }
+    .day-change {
+      width: 7.2rem;
+      &.red {
+        color: var(--clr-red);
+      }
+      &.green {
+        color: var(--clr-green);
+      }
+    }
+    .price-slider {
+      width: 20rem;
+      margin-right: 4.5rem;
     }
   }
 `;
+
 export default Row;
