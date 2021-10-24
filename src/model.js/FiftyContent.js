@@ -39,6 +39,7 @@ export const FiftyProvider = ({ children }) => {
     });
 
     setFiftyStocks(formatData(filteredData));
+
     setIsloading(false);
   };
 
@@ -46,7 +47,9 @@ export const FiftyProvider = ({ children }) => {
     fetchData(options);
   }, []);
   return (
-    <FiftyContext.Provider value={{ fiftyStocks, isLoading }}>
+    <FiftyContext.Provider
+      value={{ fiftyStocks, setFiftyStocks, isLoading, setIsloading }}
+    >
       {children}
     </FiftyContext.Provider>
   );

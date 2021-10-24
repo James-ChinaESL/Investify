@@ -7,20 +7,15 @@ import HeaderForTable from "../components/HeaderForTable";
 export default function Table() {
   const { fiftyStocks } = useFiftyContext();
   let stocksToProps = fiftyStocks;
-  const sortByName = (stocks) => {};
-  const sortByCap = (stocks) => {};
-  const sortByPrice = (stocks) => {};
-  const sortByToday = (stocks) => {};
-  const sortByYearRange = (stocks) => {};
 
   return (
     <Wrapper>
       <HeaderForTable
-        sortByName={sortByName}
-        sortByCap={sortByCap}
-        sortByPrice={sortByPrice}
-        sortByToday={sortByToday}
-        sortByYearRange={sortByYearRange}
+      // sortByName={sortByName}
+      // sortByCap={sortByCap}
+      // sortByPrice={sortByPrice}
+      // sortByToday={sortByToday}
+      // sortByYearRange={sortByYearRange}
       />
       <div className='table'>
         {fiftyStocks.map((company, i) => {

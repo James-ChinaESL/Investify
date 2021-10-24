@@ -20,7 +20,7 @@ function HeaderForTable() {
           Today <FaSort className='sort' />
         </div>
         <div className='price-slider'>
-          52 weeks price range <FaSort className='sort' />
+          52 weeks range <FaSort className='sort' />
         </div>
       </div>
     </Wrapper>
@@ -34,8 +34,9 @@ const Wrapper = styled.div`
     margin: 10px auto 2px;
     justify-content: space-between;
     background-color: #2b2d3e;
-    font-size: 1.8rem;
-    font-family: Roboto + Mono;
+    font-size: 1.6rem;
+    letter-spacing: 1px;
+    font-family: Sans-Serif;
     font-weight: 600;
     text-align: center;
     vertical-align: middle;
@@ -47,11 +48,11 @@ const Wrapper = styled.div`
       line-height: 6.5rem;
     }
     .rank {
-      margin-left: 1.5rem;
-      width: 2.1rem;
+      margin-left: 0.5rem;
     }
     .join {
-      width: 19.5rem;
+      width: 18rem;
+      margin-left: -5rem;
     }
 
     .market-cap {
@@ -66,7 +67,7 @@ const Wrapper = styled.div`
       width: 7.5rem;
     }
     .price-slider {
-      font-size: 1.8rem;
+      font-size: 1.6rem;
       width: 20rem;
       margin-right: 4.5rem;
     }
