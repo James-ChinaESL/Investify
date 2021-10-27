@@ -48,7 +48,7 @@ function Row({
 const Wrapper = styled.div`
   .table__row {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     background-color: #2b2d3e;
     :hover {
       background-color: #223144;

@@ -12,13 +12,16 @@ import { res } from "../model.js/responseData";
 export default function Table({ list, formatBy }) {
   const [tableStocks, setTableStocks] = useState([]);
   const [isLoading, setIsloading] = useState();
+  const [sortedBy, setSortedBy] = useState();
   const fetchData = async () => {
     setIsloading(true);
     ///////fetching starts
-    const res = await axios.get(
-      "https://yh-finance.p.rapidapi.com/market/v2/get-quotes",
-      options(list)
-    );
+    // const res = await axios.get(
+    //   "https://yh-finance.p.rapidapi.com/market/v2/get-quotes",
+    //   options(list)
+    // );
+    ///////fetching ends
+
     const filteredData = filterApiInfo(res);
     const formatedData = formatData(filteredData);
     setTableStocks(formatedData);
@@ -29,19 +32,45 @@ export default function Table({ list, formatBy }) {
     fetchData();
   }, []);
 
-  const sortByNameDes = () => {
+  const sortByName = () => {
     setIsloading(true);
-    const sorted = tableStocks.sort((a, b) =>
-      a.shortName > b.shortName ? 1 : -1
-    );
-    setTableStocks(sorted);
-    setIsloading(false);
+    if (sortedBy === "nameDes") {
+      const sorted = tableStocks.sort((a, b) =>
+        a.shortName < b.shortName ? 1 : -1
+      );
+      setTableStocks(sorted);
+      setIsloading(false);
+      setSortedBy("nameAsc");
+    } else {
+      const sorted = tableStocks.sort((a, b) =>
+        a.shortName > b.shortName ? 1 : -1
+      );
+      setTableStocks(sorted);
+      setIsloading(false);
+      setSortedBy("nameDes");
+    }
+  };
+
+  const sortByCap = () => {
+    setIsloading(true);
+    if (sortedBy === "capDes") {
+      const sorted = tableStocks.sort(
+        (a, b) => b.marketCaptoSort - a.marketCaptoSort
+      );
+      setTableStocks(sorted);
+      setIsloading(false);
+      setSortedBy("capAsc");
+    } else {
+      const sorted = tableStocks.sort(
+        (a, b) => a.marketCaptoSort - b.marketCaptoSort
+      );
+      setTableStocks(sorted);
+      setIsloading(false);
+      setSortedBy("capDes");
+    }
   };
   // const sortByMarketCap = () => {
   //   console.log("sortByMarketCap");
-  //   const sorted = formatStockData(filteredData).sort(
-  //     (a, b) => b.marketCaptoSort - a.marketCaptoSort
-  //   );
 
   // setTableStocks(sorted);
 
@@ -52,8 +81,8 @@ export default function Table({ list, formatBy }) {
   return (
     <Wrapper>
       <HeaderForTable
-        sortByNameDes={sortByNameDes}
-        // sortByCap={sortByCap}
+        sortByName={sortByName}
+        sortByCap={sortByCap}
         // sortByPrice={sortByPrice}
         // sortByToday={sortByToday}
         // sortByYearRange={sortByYearRange}
