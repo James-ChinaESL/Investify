@@ -7,8 +7,12 @@ function HeaderForTable() {
     <Wrapper>
       <div className='header-table'>
         <div className='rank'>Rank</div>
-        <div className='join'>
-          Name <FaSort className='sort' />
+        <div className='name_logo'>
+          Name{" "}
+          <FaSort
+            className='sort'
+            onClick={() => console.log("sort by name")}
+          />
         </div>
         <div className='market-cap'>
           Market Cap <FaSort className='sort' />
@@ -32,10 +36,9 @@ const Wrapper = styled.div`
     width: 95%;
     display: flex;
     margin: 10px auto 2px;
-    justify-content: space-between;
+    justify-content: space-around;
     background-color: #2b2d3e;
     font-size: 1.6rem;
-    letter-spacing: 1px;
     font-family: Sans-Serif;
     font-weight: 600;
     text-align: center;
@@ -50,9 +53,9 @@ const Wrapper = styled.div`
     .rank {
       margin-left: 0.5rem;
     }
-    .join {
+    .name_logo {
       width: 18rem;
-      margin-left: -5rem;
+      /* margin-left: -3rem; */
     }
 
     .market-cap {

@@ -1,14 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
-import { FiftyProvider } from "./model.js/FiftyContent";
 import "./index.css";
 
 ReactDOM.render(
   <React.StrictMode>
-    <FiftyProvider>
-      <App />
-    </FiftyProvider>
+    <App />
   </React.StrictMode>,
   document.getElementById("root")
 );

@@ -46,7 +46,7 @@ function Row({
 const Wrapper = styled.div`
   .table__row {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     background-color: #2b2d3e;
     :hover {
       background-color: #223144;
@@ -79,7 +79,7 @@ const Wrapper = styled.div`
       }
       .name-link {
         margin-left: 2rem;
-        width: 13.5rem;
+        width: 9.6rem;
         text-decoration: none;
         &,
         &:link,
@@ -105,7 +105,7 @@ const Wrapper = styled.div`
     .market-cap {
       width: 12rem;
       text-align: right;
-      margin-left: -3rem;
+      margin-left: 0rem;
     }
     .price {
       width: 8.2rem;

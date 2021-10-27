@@ -1,9 +1,10 @@
-export const formatData = (stocks) => {
+export const formatStockData = (stocks) => {
   return stocks.map((stock) => {
     return {
       ...stock,
       shortName: formatName(stock),
       marketCap: formatMarketCap(stock),
+      marketCaptoSort: stock.marketCap,
       regularMarketChangePercent: stock.regularMarketChangePercent.toFixed(2),
     };
   });
@@ -51,6 +52,9 @@ const formatName = (stock) => {
       break;
     case "JNJ":
       stockName = "Johnson";
+      break;
+    case "EA":
+      stockName = "EA";
       break;
     default:
       break;

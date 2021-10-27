@@ -24,6 +24,11 @@
 html {
   font-size: 62.5%;
 }
+@media (min-width: 1250px) {
+  html {
+    font-size: 75%;
+  }
+}
 body {
   font-family: "Raleway", sans-serif;
   color: var(--clr-white);
