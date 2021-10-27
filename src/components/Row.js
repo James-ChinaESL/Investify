@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import PriceSlider from "./Price-slider";
+import { v4 as uuidv4 } from "uuid";
+
 function Row({
   shortName,
   fiftyTwoWeekHigh: high,
@@ -12,12 +14,12 @@ function Row({
   targetPriceMean: target,
   regularMarketChangePercent: change,
   symbol,
-  i,
+  rank,
 }) {
   return (
     <Wrapper>
       <div className='table__row'>
-        <div className='rank'>{i}</div>
+        <div className='rank'>{rank}</div>
         <div className='join'>
           <div className='image-container'>
             <img
@@ -37,7 +39,7 @@ function Row({
           {change}%
         </div>
         <div className='price-slider'>
-          <PriceSlider low={low} high={high} price={price} />
+          <PriceSlider low={low} high={high} price={price} key={uuidv4()} />
         </div>
       </div>
     </Wrapper>

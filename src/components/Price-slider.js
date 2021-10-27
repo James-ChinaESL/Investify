@@ -1,7 +1,6 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
-import { borderRadius } from "@mui/system";
 import { v4 as uuidv4 } from "uuid";
 
 export default function DiscreteSliderMarks({ low, high, price }) {

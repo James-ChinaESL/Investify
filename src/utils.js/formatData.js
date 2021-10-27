@@ -1,4 +1,4 @@
-export const formatStockData = (stocks) => {
+export const formatData = (stocks) => {
   return stocks.map((stock) => {
     return {
       ...stock,

@@ -2,17 +2,13 @@ import React from "react";
 import styled from "styled-components";
 import { FaSort } from "react-icons/fa";
 
-function HeaderForTable() {
+function HeaderForTable({ sortByNameDes }) {
   return (
     <Wrapper>
       <div className='header-table'>
         <div className='rank'>Rank</div>
         <div className='name_logo'>
-          Name{" "}
-          <FaSort
-            className='sort'
-            onClick={() => console.log("sort by name")}
-          />
+          Name <FaSort className='sort' onClick={sortByNameDes} />
         </div>
         <div className='market-cap'>
           Market Cap <FaSort className='sort' />
