@@ -6,6 +6,7 @@ export const formatData = (stocks) => {
       marketCap: formatMarketCap(stock),
       marketCaptoSort: stock.marketCap,
       regularMarketChangePercent: stock.regularMarketChangePercent.toFixed(2),
+      priceRelativeToYear: priceRelativeToYear(stock),
     };
   });
 };
@@ -29,11 +30,11 @@ const formatName = (stock) => {
       stockName = "AMD";
       break;
     case "EA":
-      stockName = "Electronic Arts";
+      stockName = "EA";
       break;
 
     case "DIS":
-      stockName = "Walt Disney";
+      stockName = "Disney";
       break;
     case "JNJ":
       stockName = "Johnson";
@@ -67,4 +68,11 @@ const formatMarketCap = (stock) => {
   } else {
     return `${(stock.marketCap / 10 ** 9).toFixed(2)} B`;
   }
+};
+
+const priceRelativeToYear = (stock) => {
+  return (
+    (stock.regularMarketPrice - stock.fiftyTwoWeekLow) /
+    (stock.fiftyTwoWeekHigh - stock.regularMarketPrice)
+  );
 };

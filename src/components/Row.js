@@ -25,7 +25,8 @@ function Row({
             <img
               className='company-logo'
               src={`./logos/${symbol}.png`}
-              alt={`${shortName}_logo`}
+              // src={`https://finnhub.io/api/logo?symbol=${symbol}`}
+              alt='logo'
             />
           </div>
           <a className='name-link' href='#'>
@@ -48,7 +49,7 @@ function Row({
 const Wrapper = styled.div`
   .table__row {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     background-color: #2b2d3e;
     :hover {
       background-color: #223144;
@@ -124,6 +125,12 @@ const Wrapper = styled.div`
     .price-slider {
       width: 20rem;
       margin-right: 4.5rem;
+    }
+
+    @media (max-width: 880px) {
+      .price-slider {
+        width: 14rem;
+      }
     }
   }
 `;

@@ -2,10 +2,13 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import "./index.css";
+import { SearchProvider } from "./contexts/searchContext";
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <SearchProvider>
+      <App />
+    </SearchProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );

@@ -2,7 +2,13 @@ import React from "react";
 import styled from "styled-components";
 import { FaSort } from "react-icons/fa";
 
-function HeaderForTable({ sortByName, sortByCap }) {
+function HeaderForTable({
+  sortByName,
+  sortByCap,
+  sortByPrice,
+  sortByToday,
+  sortByYear,
+}) {
   return (
     <Wrapper>
       <div className='header-table'>
@@ -14,13 +20,13 @@ function HeaderForTable({ sortByName, sortByCap }) {
           Market Cap <FaSort className='sort' onClick={sortByCap} />
         </div>
         <div className='price'>
-          Price <FaSort className='sort' />
+          Price <FaSort className='sort' onClick={sortByPrice} />
         </div>
         <div className='day-change'>
-          Today <FaSort className='sort' />
+          Today <FaSort className='sort' onClick={sortByToday} />
         </div>
         <div className='price-slider'>
-          52 weeks range <FaSort className='sort' />
+          52 weeks range <FaSort className='sort' onClick={sortByYear} />
         </div>
       </div>
     </Wrapper>

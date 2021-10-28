@@ -29,8 +29,15 @@ html {
     font-size: 75%;
   }
 }
+
+@media (max-width: 850px) {
+  html {
+    font-size: 50%;
+  }
+}
 body {
   font-family: "Raleway", sans-serif;
+  font-size: 1.6rem;
   color: var(--clr-white);
   background: var(--body-gradient);
   background-repeat: no-repeat;

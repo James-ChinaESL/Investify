@@ -5,13 +5,9 @@ export const filterApiInfo = (res) => {
       regularMarketPrice: stock.regularMarketPrice,
       fiftyTwoWeekLow: stock.fiftyTwoWeekLow,
       fiftyTwoWeekHigh: stock.fiftyTwoWeekHigh,
-      fiftyTwoWeekHighChangePercent: stock.fiftyTwoWeekHighChangePercent,
-      fiftyTwoWeekLowChangePercent: stock.fiftyTwoWeekLowChangePercent,
-      fiftyTwoWeekLowChangePercent: stock.fiftyTwoWeekLowChangePercent,
       symbol: stock.symbol,
       marketCap: stock.marketCap,
       regularMarketChangePercent: stock.regularMarketChangePercent,
-      targetPriceMean: stock.targetPriceMean,
     };
 
     return filteredStockInfo;

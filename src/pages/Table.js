@@ -25,67 +25,92 @@ export default function Table({ list, formatBy }) {
     const filteredData = filterApiInfo(res);
     const formatedData = formatData(filteredData);
     setTableStocks(formatedData);
-    // setIsloading(false);
+    setIsloading(false);
   };
 
   useEffect(() => {
     fetchData();
   }, []);
 
-  const sortByName = () => {
-    setIsloading(true);
-    if (sortedBy === "nameDes") {
-      const sorted = tableStocks.sort((a, b) =>
-        a.shortName < b.shortName ? 1 : -1
-      );
-      setTableStocks(sorted);
-      setIsloading(false);
-      setSortedBy("nameAsc");
+  const sort = (type) => {
+    let sorted;
+    if (sortedBy === `${type}Des`) {
+      switch (type) {
+        case "name":
+          sorted = tableStocks.sort((a, b) =>
+            a.shortName < b.shortName ? 1 : -1
+          );
+          break;
+        case "cap":
+          sorted = tableStocks.sort(
+            (a, b) => a.marketCaptoSort - b.marketCaptoSort
+          );
+          break;
+        case "price":
+          sorted = tableStocks.sort(
+            (a, b) => a.regularMarketPrice - b.regularMarketPrice
+          );
+          break;
+        case "todayChange":
+          sorted = tableStocks.sort(
+            (a, b) =>
+              a.regularMarketChangePercent - b.regularMarketChangePercent
+          );
+          break;
+        case "yearChange":
+          sorted = tableStocks.sort(
+            (a, b) => a.priceRelativeToYear - b.priceRelativeToYear
+          );
+          break;
+        default:
+          break;
+      }
+
+      setSortedBy(`${type}Asc`);
     } else {
-      const sorted = tableStocks.sort((a, b) =>
-        a.shortName > b.shortName ? 1 : -1
-      );
-      setTableStocks(sorted);
-      setIsloading(false);
-      setSortedBy("nameDes");
+      switch (type) {
+        case "name":
+          sorted = tableStocks.sort((a, b) =>
+            a.shortName > b.shortName ? 1 : -1
+          );
+          break;
+        case "cap":
+          sorted = tableStocks.sort(
+            (a, b) => b.marketCaptoSort - a.marketCaptoSort
+          );
+          break;
+        case "price":
+          sorted = tableStocks.sort(
+            (a, b) => b.regularMarketPrice - a.regularMarketPrice
+          );
+          break;
+        case "todayChange":
+          sorted = tableStocks.sort(
+            (a, b) =>
+              b.regularMarketChangePercent - a.regularMarketChangePercent
+          );
+          break;
+        case "yearChange":
+          sorted = tableStocks.sort(
+            (a, b) => b.priceRelativeToYear - a.priceRelativeToYear
+          );
+          break;
+        default:
+          break;
+      }
+      setSortedBy(`${type}Des`);
     }
+    setTableStocks(sorted);
   };
-
-  const sortByCap = () => {
-    setIsloading(true);
-    if (sortedBy === "capDes") {
-      const sorted = tableStocks.sort(
-        (a, b) => b.marketCaptoSort - a.marketCaptoSort
-      );
-      setTableStocks(sorted);
-      setIsloading(false);
-      setSortedBy("capAsc");
-    } else {
-      const sorted = tableStocks.sort(
-        (a, b) => a.marketCaptoSort - b.marketCaptoSort
-      );
-      setTableStocks(sorted);
-      setIsloading(false);
-      setSortedBy("capDes");
-    }
-  };
-  // const sortByMarketCap = () => {
-  //   console.log("sortByMarketCap");
-
-  // setTableStocks(sorted);
-
-  const sortByPrice = (stocks) => {};
-  const sortByToday = (stocks) => {};
-  const sortByYearRange = (stocks) => {};
 
   return (
     <Wrapper>
       <HeaderForTable
-        sortByName={sortByName}
-        sortByCap={sortByCap}
-        // sortByPrice={sortByPrice}
-        // sortByToday={sortByToday}
-        // sortByYearRange={sortByYearRange}
+        sortByName={() => sort("name")}
+        sortByCap={() => sort("cap")}
+        sortByPrice={() => sort("price")}
+        sortByToday={() => sort("todayChange")}
+        sortByYear={() => sort("yearChange")}
       />
       <div className='table'>
         {tableStocks.map((company, i) => {
