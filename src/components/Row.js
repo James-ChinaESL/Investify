@@ -6,12 +6,9 @@ import { v4 as uuidv4 } from "uuid";
 function Row({
   shortName,
   fiftyTwoWeekHigh: high,
-  fiftyTwoWeekHighChangePercent: fromHigh,
   fiftyTwoWeekLow: low,
-  fiftyTwoWeekLowChangePercent: fromLow,
   marketCap,
   regularMarketPrice: price,
-  targetPriceMean: target,
   regularMarketChangePercent: change,
   symbol,
   rank,
@@ -29,7 +26,7 @@ function Row({
               alt='logo'
             />
           </div>
-          <a className='name-link' href='#'>
+          <a className='name-link' href={`company/${symbol}`}>
             <div className='name'> {shortName}</div>
             <div className='ticker'>{symbol}</div>
           </a>
@@ -50,9 +47,9 @@ const Wrapper = styled.div`
   .table__row {
     display: flex;
     justify-content: space-around;
-    background-color: #2b2d3e;
+    background-color: var(--clr-row);
     :hover {
-      background-color: #223144;
+      background-color: var(--clr-row-hover);
     }
     .rank,
     .market-cap,
@@ -60,7 +57,7 @@ const Wrapper = styled.div`
     .day-change,
     .company-logo,
     .image-container {
-      font-family: "Quicksand", sans-serif;
+      font-family: var(--ff-numbers), sans-serif;
       vertical-align: middle;
       line-height: 6.5rem;
       text-align: right;
@@ -87,7 +84,7 @@ const Wrapper = styled.div`
         &,
         &:link,
         &:visited {
-          color: #fafafa;
+          color: var(--fc-primary);
         }
         &:hover {
           text-decoration: underline;
@@ -116,10 +113,10 @@ const Wrapper = styled.div`
     .day-change {
       width: 7.2rem;
       &.red {
-        color: var(--clr-red);
+        color: #fa5555;
       }
       &.green {
-        color: var(--clr-green);
+        color: #afa;
       }
     }
     .price-slider {

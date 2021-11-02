@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { options } from "../utils.js/fetchOptions";
-import { formatData } from "../utils.js/formatData";
+import { optionsYahoo, urlYahoo } from "../utils/fetchOptions";
+import { formatData } from "../utils/formatData";
 import styled from "styled-components";
 import HeaderForTable from "../components/HeaderForTable";
 import Row from "../components/Row";
-import { filterApiInfo } from "../utils.js/filterApiInfo";
+import { filterApiInfo } from "../utils/filterApiInfo";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import { res } from "../model.js/responseData";
@@ -16,10 +16,7 @@ export default function Table({ list, formatBy }) {
   const fetchData = async () => {
     setIsloading(true);
     ///////fetching starts
-    // const res = await axios.get(
-    //   "https://yh-finance.p.rapidapi.com/market/v2/get-quotes",
-    //   options(list)
-    // );
+    // const res = await axios.get(urlYahoo, optionsYahoo(list));
     ///////fetching ends
 
     const filteredData = filterApiInfo(res);
@@ -121,8 +118,9 @@ export default function Table({ list, formatBy }) {
   );
 }
 
-const Wrapper = styled.div`
+const Wrapper = styled.section`
   .table {
+    font-family: var(--ff-primary);
     font-size: 2rem;
     display: grid;
     grid-template-columns: 95%;

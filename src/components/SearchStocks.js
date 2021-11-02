@@ -1,12 +1,28 @@
 import styled from "styled-components";
-import React, { useEffect, useRef } from "react";
-import { useSearchContext } from "../contexts/searchContext";
+import React, { useEffect, useRef, useState, useCallback } from "react";
+import axios from "axios";
+import { finhubApiKey, urlSymbolLookup as url } from "../utils/fetchOptions";
+import LinearProgress from "@mui/material/LinearProgress";
+
+import Box from "@mui/material/Box";
 
 const SearchStocks = () => {
-  const { loading, setSearchTerm, searchTerm, results, fetchStocks } =
-    useSearchContext();
-
+  const [loading, setLoading] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [results, setResults] = useState([]);
   const searchValue = useRef("");
+
+  const fetchStocks = useCallback(async () => {
+    if (!searchTerm) return;
+    setLoading(true);
+    try {
+      const res = await axios.get(`${url}${searchTerm}&token=${finhubApiKey}`);
+      if (res) setResults(res.data.result.slice(0, 3));
+    } catch (error) {
+      console.log(error);
+    }
+    setLoading(false);
+  }, [searchTerm]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -14,7 +30,17 @@ const SearchStocks = () => {
   const search = () => {
     setSearchTerm(searchValue.current.value);
   };
-  console.log(results);
+
+  const clearInput = (e) => {
+    // console.log(e);
+    if (!e.currentTarget.contains(e.relatedTarget)) {
+      searchValue.current.value = "";
+      setSearchTerm("");
+    }
+  };
+  const focus = (e) => {
+    console.log(e);
+  };
 
   useEffect(() => {
     const timeoutId = setTimeout(() => fetchStocks(searchTerm), 500);
@@ -22,54 +48,104 @@ const SearchStocks = () => {
   }, [searchTerm]);
   return (
     <Wrapper>
-      <section className='section-search'>
-        <form
-          className='search-form'
-          autocomplete='off'
-          onSubmit={handleSubmit}
-        >
-          <div className='form-control'>
-            <input
-              type='text'
-              name='name'
-              id='name'
-              ref={searchValue}
-              onChange={search}
-            />
-          </div>
+      <div className='search-container' onBlur={clearInput}>
+        <form className='form' autoComplete='off' onSubmit={handleSubmit}>
+          <input
+            name='input stock to search'
+            type='text'
+            ref={searchValue}
+            onFocus={focus}
+            onChange={search}
+            placeholder='Search'
+            className='search-field'
+          />
+          <button type='submit' className='search-button'>
+            <img src='search.png' />
+          </button>
         </form>
-        {results && (
+        {loading && (
+          <Box sx={{ width: "100%" }}>
+            <LinearProgress color='inherit' />
+          </Box>
+        )}
+        {searchTerm && results && (
           <div className='results'>
             {results.map((result, i) => {
               return (
-                <div className='result'>
-                  <a href={result.symbol} key={i}>
-                    {`${result.description} - ${result.symbol}`}
+                <div className='result' key={i}>
+                  <a href={`/company/${result.symbol}`}>
+                    <p className='name'>{result.description.toLowerCase()}</p>
+                    <p>{result.symbol}</p>
                   </a>
                 </div>
               );
             })}
           </div>
         )}
-      </section>
+      </div>
     </Wrapper>
   );
 };
 
 export default SearchStocks;
 
-const Wrapper = styled.div`
-  .section-search {
-    height: 10vh;
-    form {
-    }
+const Wrapper = styled.section`
+  & {
+    display: flex;
+    justify-content: end;
+    margin-right: 3rem;
   }
+  .search-container {
+    width: 25rem;
+  }
+
+  .form {
+    display: flex;
+    flex-direction: row;
+  }
+  .search-field {
+    width: 100%;
+    padding: 10px 35px 10px 15px;
+    border: none;
+    border-bottom: 1px solid black;
+    outline: none;
+    font-family: inherit;
+    text-transform: uppercase;
+  }
+
+  .search-button {
+    background: transparent;
+    border: none;
+    outline: none;
+    margin-left: -33px;
+  }
+
+  .search-button img {
+    width: 20px;
+    height: 20px;
+    object-fit: cover;
+  }
+
   .results {
     display: flex;
+    background-color: white;
     flex-direction: column;
+
     a {
+      padding: 0.3rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      font-size: 1.2rem;
       text-decoration: none;
-      color: white;
+      color: black;
+      &:hover {
+        text-decoration: underline;
+      }
+      .name {
+        text-transform: capitalize;
+      }
+      .symbol {
+      }
     }
   }
 `;

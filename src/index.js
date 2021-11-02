@@ -6,9 +6,7 @@ import { SearchProvider } from "./contexts/searchContext";
 
 ReactDOM.render(
   <React.StrictMode>
-    <SearchProvider>
-      <App />
-    </SearchProvider>
+    <App />
   </React.StrictMode>,
   document.getElementById("root")
 );

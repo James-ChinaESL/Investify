@@ -1,17 +1,32 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Raleway&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Open+Sans|Roboto:400,700&display=swap");
 
 @import url("https://fonts.googleapis.com/css2?family=Quicksand&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap");
 :root {
   --body-gradient: linear-gradient(
     0deg,
-    rgba(52, 62, 89, 1) 0%,
-    rgba(58, 64, 74, 1) 100%
+    rgba(58, 64, 74, 1) 0%,
+    rgba(52, 62, 89, 1) 75%,
+    rgba(52, 62, 89, 1) 100%
   );
-  --clr-white: #fafafa;
-  --clr-green: #afa;
-  --clr-red: #fa5555;
+  --fc-primary: #fafafa;
+  --fc-disabled: #ced7df;
+  --fc-secondary: #ffffff;
+
+  --clr-row: #2b2d3e;
+  --clr-row-hover: #223144;
+  --clr-field: #293c55;
+  /* --clr-black: #1c252e; */
+  /* --clr-blue: #3f8fc3; */
+  --ff-primary: "Raleway", sans-serif;
+  --ff-secondary: "Roboto", sans-serif;
+  --ff-tertiary: "Open Sans", sans-serif;
+  --ff-numbers: "Quicksand", sans-serif;
+  --transition: all 0.3s linear;
+  --box-shadow: 1px 1px 3px black;
+  --text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
 *,
@@ -26,7 +41,12 @@ html {
 }
 @media (min-width: 1250px) {
   html {
-    font-size: 75%;
+    font-size: 70%;
+  }
+}
+@media (max-width: 1030px) {
+  html {
+    font-size: 55%;
   }
 }
 
@@ -36,9 +56,16 @@ html {
   }
 }
 body {
-  font-family: "Raleway", sans-serif;
+  /* font-family: "Raleway", sans-serif; */
   font-size: 1.6rem;
-  color: var(--clr-white);
+  color: var(--fc-primary);
   background: var(--body-gradient);
   background-repeat: no-repeat;
+  font-family: var(--ff-primary);
+}
+h1 {
+  font-weight: 400;
+}
+h2 {
+  font-weight: 400;
 }

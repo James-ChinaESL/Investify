@@ -36,7 +36,7 @@ export default function DiscreteSliderMarks({ low, high, price }) {
             marginTop: "1.5rem",
           },
           "& .MuiSlider-thumb": {
-            color: "var(--clr-green)",
+            color: "#afa",
             borderRadius: "0",
             width: "1rem",
             height: "2rem",
@@ -60,19 +60,15 @@ export default function DiscreteSliderMarks({ low, high, price }) {
           },
 
           "& .MuiSlider-markLabel[data-index='1']": {
-            color: "var(--clr-white)",
-            // color: "var(--clr-green)",
+            color: "var(--fc-disabled)",
           },
           "& .MuiSlider-markLabel[data-index='0']": {
             top: "-30%",
-            // color: "var(--clr-red)",
           },
           "& .MuiSlider-markLabel[data-index='2']": {
             top: "-30%",
-            // color: "var(--clr-green)",
           },
           "& .MuiSlider-mark": {
-            color: "whitesmoke",
             width: "2px",
             height: "6px",
             borderRadius: "0px",
