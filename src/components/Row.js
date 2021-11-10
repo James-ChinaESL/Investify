@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import PriceSlider from "./Price-slider";
+import PriceSlider from "./PriceSlider";
 import { v4 as uuidv4 } from "uuid";
 
 function Row({

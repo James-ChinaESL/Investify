@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import TradingViewChart from "../components/TradingViewChart";
-import { GroupedBar, EarningsChart } from "../components/EarningsChart";
+import { EarningsChart } from "../components/EarningsChart";
 import {
   urlCompanyProfile,
   finhubApiKey,
@@ -15,13 +15,56 @@ import Button from "@mui/material/Button";
 import TargetSlider from "../components/TargetSlider";
 import StarOutlineIcon from "@mui/icons-material/StarOutline";
 import { HiPlusSm, HiMinusSm } from "react-icons/hi";
-import { allData } from "../model.js/stock";
+import { useUserContext } from "../contexts/userContext";
+import Message from "../components/Message";
 
 const SingleStock = () => {
+  const { buyStock, cash, holdings, accountValue, sellStock } =
+    useUserContext();
+
   const { ticker } = useParams();
   const [data, setData] = useState({});
   const [quantity, setQuantity] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [message, setMessage] = useState({
+    active: false,
+    status: "",
+    content: "",
+  });
+
+  const { quantity: myQuantity, average: myAverage } =
+    holdings.length > 0
+      ? holdings.find((stock) => stock.symbol === ticker) || {
+          quantity: 0,
+          average: 0,
+        }
+      : { quantity: 0, average: 0 };
+  const purchasedValue = parseFloat((myQuantity * myAverage).toFixed(2));
+
+  const currentValue = parseFloat((myQuantity * data.currentPrice).toFixed(2));
+
+  const returnInDollars = purchasedValue
+    ? parseFloat((currentValue - purchasedValue).toFixed(2))
+    : 0;
+
+  const returnProcent =
+    parseFloat(((returnInDollars / purchasedValue) * 100).toFixed(2)) || 0;
+
+  const showMessage = (status, content) => {
+    setMessage({
+      active: true,
+      status,
+      content,
+    });
+    setTimeout(() => {
+      setMessage({
+        active: false,
+        status,
+        content,
+      });
+    }, 2500);
+  };
+
   //   const res = await axios.get(urlYahoo, optionsYahoo(list));
   const fetchData = async () => {
     setLoading(true);
@@ -33,22 +76,16 @@ const SingleStock = () => {
     const getMboumData = axios.get(mboumApi, optionsMboum(ticker));
     axios.all([getFinhubData, getMboumData]).then(
       axios.spread((...allData) => {
-        console.log(allData);
-
-        console.log(formatSingleCompany(allData));
-
         setData(formatSingleCompany(allData));
         setLoading(false);
       })
     );
-    ////////////////////////
-    // console.log(formatSingleCompany(allData));
-
+    /////////////////////////////////////
     // setData(formatSingleCompany(allData));
     // setLoading(false);
     //////////////////////
   };
-  const quantityChangeHandler = (e) => {
+  const quantityInputHandler = (e) => {
     setQuantity(parseInt(e.target.value));
   };
   const quantityFocusHandler = (e) => {
@@ -56,8 +93,36 @@ const SingleStock = () => {
   };
   const quantityBlurHandler = (e) => {
     if (e.target.value === "") setQuantity(0);
+    // setQuantity(0);
   };
-
+  const buyHandler = () => {
+    if (quantity === 0) {
+      showMessage("warning", "Please set quantity of stocks");
+      return;
+    }
+    if (quantity * data.currentPrice > cash) {
+      showMessage("error", "Not enough cash!");
+      return;
+    }
+    buyStock(ticker, quantity, data.currentPrice);
+    showMessage("success", "Successfully bought!");
+  };
+  const sellHandler = () => {
+    if (myQuantity === 0) {
+      showMessage("error", `You don't have ${ticker} stocks!`);
+      return;
+    }
+    if (quantity > myQuantity) {
+      showMessage("error", `You don't have  enough ${ticker} stocks!`);
+      return;
+    }
+    if (quantity === 0) {
+      showMessage("warning", "Please set quantity of stocks");
+      return;
+    }
+    sellStock(ticker, quantity, data.currentPrice);
+    setQuantity(0);
+  };
   const increase = () => {
     setQuantity((prev) => prev + 1);
   };
@@ -75,6 +140,7 @@ const SingleStock = () => {
   return (
     !loading && (
       <Wrapper>
+        <Message {...message} />
         <div className='main-container'>
           <section className='chart-description'>
             <TradingViewChart ticker={ticker} />
@@ -99,16 +165,21 @@ const SingleStock = () => {
                 />
                 <div className='name-industry'>
                   <h1 className='name'>{data.name.slice(0, 14)}</h1>
-                  <p className='industry label'>{data.industry}</p>
+                  <p className='label'>{data.industry}</p>
                 </div>
               </div>
-
-              <div className='market_cap-label'>
-                <div className='cap number'>{data.marketCap}</div>
+              <div className='country'>
+                <div className='info'>{data.country}</div>
+                <div className='label'>Country</div>
+              </div>
+              <div className='cap'>
+                <div className='info number'>{data.marketCap}</div>
                 <div className='label'>Market Cap</div>
               </div>
-              <div className='pe-label'>
-                <div className='pe number'>{data.pe > 0 ? data.pe : "<0"}</div>
+              <div className='pe'>
+                <div className='info number'>
+                  {data.pe > 0 ? data.pe : "<0"}
+                </div>
                 <div className='label'>P/E</div>
               </div>
               <Button
@@ -123,7 +194,7 @@ const SingleStock = () => {
                 </div>
               </Button>
             </div>
-            <div className='trade-holdings'>
+            <div className='trade-holdings-ratios'>
               <div className='trade'>
                 <h2>Trade</h2>
                 {/* <div className='price-amount'> */}
@@ -136,7 +207,7 @@ const SingleStock = () => {
                     min='0'
                     name='quantity'
                     value={quantity}
-                    onChange={quantityChangeHandler}
+                    onChange={quantityInputHandler}
                     onFocus={quantityFocusHandler}
                     onBlur={quantityBlurHandler}
                   />
@@ -157,13 +228,21 @@ const SingleStock = () => {
                 {/* </div> */}
 
                 <p>
-                  <span className='number'>5%&nbsp;</span> of account value
+                  <span className='number'>{`${(
+                    ((data.currentPrice * quantity) / accountValue()) *
+                    100
+                  ).toFixed(2)}% `}</span>{" "}
+                  of account value
                 </p>
                 <div className='buy_group group'>
                   <div className='buy_max max number'>
-                    max:&nbsp;<span className='number'>137</span>
+                    max:&nbsp;
+                    <span className='number'>
+                      {parseInt(cash / data.currentPrice)}
+                    </span>
                   </div>
                   <Button
+                    onClick={buyHandler}
                     size='large'
                     variant='contained'
                     className=' btn btn_buy'
@@ -175,13 +254,15 @@ const SingleStock = () => {
 
                 <div className='sell_group group'>
                   <div className='sell_max max number'>
-                    max:&nbsp;<span className='number'>0</span>
+                    max:&nbsp;
+                    <span className='number'>{myQuantity}</span>
                   </div>
                   <Button
                     size='large'
                     variant='contained'
                     className='btn btn_sell'
                     color='error'
+                    onClick={sellHandler}
                   >
                     Sell
                   </Button>
@@ -190,50 +271,96 @@ const SingleStock = () => {
               <div className='holdings'>
                 <h2 className='title'>My Holdings</h2>
                 <div className='left field'>Quantity</div>
-                <div className='right number field'>12</div>
+                <div className='right number field'>{myQuantity}</div>
                 <div className='left field'>Average</div>
-                <div className='right number field'>$137.81</div>
+                <div className='right number field'>${myAverage}</div>
                 <div className='left field'>Value</div>
-                <div className='right number field'>$1878.81</div>
+                <div className='right number field'>
+                  ${(myQuantity * myAverage).toFixed(2)}
+                </div>
                 <div className='left field'>Return, $</div>
-                <div className='right number field'>$110.80</div>
+                <divf
+                  className={`right number field ${
+                    returnInDollars > 0
+                      ? "positive"
+                      : returnInDollars < 0
+                      ? "negative"
+                      : null
+                  }`}
+                >
+                  {returnInDollars > 0
+                    ? `+${returnInDollars}`
+                    : returnInDollars}
+                  $
+                </divf>
                 <div className='left field'>Return, %</div>
-                <div className='right number field'>15%</div>
+                <div
+                  className={`right number field ${
+                    returnProcent > 0
+                      ? "positive"
+                      : returnProcent < 0
+                      ? "negative"
+                      : null
+                  }`}
+                >
+                  {returnProcent > 0 ? `+${returnProcent}` : returnProcent}%
+                </div>
               </div>
-              <div className='details'>
-                <h2>Details:</h2>
-                <ul>
-                  <li>Country: {`${data.country}`}</li>
-                  <li>Industry: {`${data.industry}`}</li>
-                  <li>Market Cap: {`${data.marketCap} $M`}</li>
-                  <li>Return on assets: {`${data.roa.toFixed(0)}%`}</li>
-                  <li>Retrun on equity: {`${data.roe.toFixed(0)}%`}</li>
-                  <li>Debt to equity: {`${data.debtToEquity?.toFixed(0)}%`}</li>
-                </ul>
+              <div className='ratios'>
+                <h2>Ratios</h2>
+                <div className='field left'>P/E</div>
+                <div className='field right number'> {`${data.pe}`}</div>
+                <div className='field left'>EPS</div>
+                <div className='field right number'> {`$${data.eps}`}</div>
+                <div className='field left'>ROA</div>
+                <div className='field right number'>{`${data.roa.toFixed(
+                  0
+                )}%`}</div>
+                <div className='field left'>ROE</div>
+                <div className='field right number'>{`${data.roe.toFixed(
+                  0
+                )}%`}</div>
+                <div className='field left'>D/E</div>
+
+                <div className='field right number'>
+                  {`${data.debtToEquity?.toFixed(0)}%`}
+                </div>
               </div>
             </div>
             <div className='analytics-earnings'>
+              <div className='analytics'>
+                <h2>Recommendation</h2>
+                <div className='rating-recommendation'>
+                  <div className='rating number'>{data.recommendationMean}</div>
+                  <div>
+                    <div className='recommendation'>
+                      {`${data.recommendationKey}`}
+                    </div>
+                    <div className='number_analyses'>
+                      {`${data.numberOfAnalyses} analyses`}
+                    </div>
+                  </div>
+                </div>
+                <div className='targets'>
+                  <h2>Price Targets</h2>
+                  <div className='target_slider'>
+                    <TargetSlider
+                      low={data.targetLowPrice}
+                      high={data.targetHighPrice}
+                      mean={data.targetMeanPrice}
+                      price={data.currentPrice}
+                    ></TargetSlider>
+                  </div>
+                </div>
+              </div>
               <div className='earnings'>
+                <h2>Revenue/Earnings</h2>
+
                 <EarningsChart
                   currency={data.earningsCurrency}
                   yearly={data.earningsYearly}
                   quarterly={data.earningsQuarterly}
                 />
-              </div>
-              <div className='analytics'>
-                <h2>Analysts 12-Month Price Target</h2>
-                <div className='rating-recomendation'>
-                  <div className='rating'>{data.recommendationMean}</div>
-                  <div className='recommendation'>
-                    {`${data.recommendationKey} (${data.numberOfAnalyses} analyses)`}
-                  </div>
-                </div>
-                <TargetSlider
-                  low={data.targetLowPrice}
-                  high={data.targetHighPrice}
-                  mean={data.targetMeanPrice}
-                  price={data.currentPrice}
-                ></TargetSlider>
               </div>
             </div>
           </section>
@@ -249,33 +376,30 @@ const Wrapper = styled.main`
     margin: 2rem;
     display: grid;
     grid-template-columns: 3fr 5fr;
-    column-gap: 2rem;
+    column-gap: 1rem;
     .chart,
     .trade,
     .holdings,
-    .details,
+    .ratios,
     .main_info {
-      background-color: var(--clr-row);
+      background: var(--card-gradient);
       border-radius: 1.5rem;
       box-shadow: 1px 1px 3px black;
       padding: 0.4rem 1rem;
-
-      &:hover {
-        background-color: var(--clr-row-hover);
-      }
     }
     .number {
       font-family: var(--ff-numbers);
+      letter-spacing: 1px;
     }
     .chart-description {
       .chart {
-        min-width: 35rem;
-        height: 35rem;
+        min-width: 32rem;
+        height: 34.6rem;
         margin-bottom: 2rem;
       }
       .description {
-        margin-top: 3rem;
-        height: 30rem;
+        margin-top: 2rem;
+        height: 28rem;
         overflow-y: scroll;
 
         .logo {
@@ -323,9 +447,10 @@ const Wrapper = styled.main`
         .label {
           font-size: 1.3rem;
         }
-        .market_cap-label,
+        .country,
+        .cap,
         .name-industry,
-        .pe-label {
+        .pe {
           display: flex;
           flex-direction: column;
           justify-content: space-between;
@@ -350,9 +475,8 @@ const Wrapper = styled.main`
             font-size: 2.5rem;
           }
         }
-        .cap,
-        .pe {
-          font-size: 2.3rem;
+        .info {
+          font-size: 2rem;
         }
 
         .watchlist_btn {
@@ -376,8 +500,8 @@ const Wrapper = styled.main`
         }
       }
 
-      .trade-holdings {
-        margin-top: 2rem;
+      .trade-holdings-ratios {
+        margin-top: 1rem;
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
         column-gap: 1rem;
@@ -404,7 +528,7 @@ const Wrapper = styled.main`
           padding: 0rem 1rem 1rem;
           display: grid;
           grid-template-columns: 1fr 1fr;
-          grid-template-rows: 4.7rem 4rem 7rem;
+          grid-template-rows: 4.7rem 5rem 7rem;
           column-gap: 1rem;
 
           .price {
@@ -434,8 +558,9 @@ const Wrapper = styled.main`
             }
             .set-quantity {
               width: 50%;
-
+              display: flex;
               flex-direction: column;
+              /* justify-content: space-between; */
               cursor: pointer;
               line-height: 0;
               .increase {
@@ -444,6 +569,8 @@ const Wrapper = styled.main`
               }
 
               .set {
+                position: relative;
+                top: 0.3rem;
                 text-align: center;
                 cursor: pointer;
                 font-size: 2rem;
@@ -512,9 +639,37 @@ const Wrapper = styled.main`
           .right {
             /* justify-content: end; */
             font-size: 1.6rem;
+            &.positive {
+              font-size: 1.7rem;
+
+              color: #afa;
+              letter-spacing: 1px;
+              text-shadow: var(--text-shadow);
+            }
+            &.negative {
+              font-size: 1.8rem;
+
+              letter-spacing: 1px;
+              color: #fa5555;
+              text-shadow: var(--text-shadow);
+            }
           }
         }
-        .details {
+        .ratios {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          grid-template-rows: repeat(1fr, 5);
+          column-gap: 1rem;
+          row-gap: 1rem;
+          padding: 0 1rem 1.5rem;
+          .left {
+            justify-content: start;
+            font-size: 1.6rem;
+          }
+          .right {
+            /* justify-content: end; */
+            font-size: 1.6rem;
+          }
           li {
             list-style: none;
             text-align: left;
@@ -522,16 +677,60 @@ const Wrapper = styled.main`
         }
       }
       .analytics-earnings {
+        display: grid;
+        column-gap: 1rem;
+        grid-template-columns: 50% 50%;
         margin-right: 3rem;
+        margin-top: 2rem;
+
         h2 {
           font-size: 2rem;
+          font-family: "Raleway";
+          font-weight: bolder;
+          letter-spacing: 2px;
+          margin: 1rem 2rem;
         }
-        margin-top: 2rem;
-        display: grid;
-        column-gap: 2rem;
-        grid-template-columns: 3fr 4fr;
+
+        .analytics {
+          padding: 0rem 3rem;
+          .rating-recommendation {
+            margin: 2rem 0 0;
+            display: flex;
+            justify-content: start;
+            align-items: center;
+            .rating {
+              background-color: green;
+              border-radius: 15px;
+              padding: 1rem 2rem;
+              font-size: 2.3rem;
+              letter-spacing: 2px;
+              font-weight: bolder;
+              margin: 0 2rem;
+            }
+            .recommendation {
+              letter-spacing: 1px;
+              font-weight: bolder;
+              font-size: 2.3rem;
+              font-family: var(--ff-tertiary);
+              text-decoration: underline;
+            }
+            .number_analyses {
+              font-family: var(--ff-numbers);
+            }
+          }
+          .targets {
+            h2 {
+              margin: 4rem 2rem 2rem;
+            }
+            .target_slider {
+              margin-left: 1.5rem;
+              width: 90%;
+            }
+          }
+        }
         .earnings {
-          width: 30rem;
+          margin-right: -1rem;
+          height: 22rem;
         }
       }
     }

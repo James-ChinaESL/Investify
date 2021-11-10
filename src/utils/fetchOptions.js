@@ -25,7 +25,13 @@ export const optionsMboum = (symbol) => {
     params: { symbol, module: "asset-profile,financial-data,earnings" },
     headers: {
       "x-rapidapi-host": "mboum-finance.p.rapidapi.com",
-      "x-rapidapi-key": mboumApiKey,
+      "x-rapidapi-key": rapidApiKey,
     },
   };
+};
+
+export const options = {
+  headers: {
+    "Content-Type": "application/json",
+  },
 };

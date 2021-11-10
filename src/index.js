@@ -2,12 +2,20 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import "./index.css";
-import { SearchProvider } from "./contexts/searchContext";
+import { Auth0Provider } from "@auth0/auth0-react";
+import { UserProvider } from "./contexts/userContext";
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <Auth0Provider
+    domain='dev-5ifb3jpf.us.auth0.com'
+    clientId='ymAaYtk0OdROTaRDmWJixAjSOZG5GMZ2'
+    redirectUri={window.location.origin}
+    // cacheLocation='localstorage'
+  >
+    <UserProvider>
+      <App />
+    </UserProvider>
+  </Auth0Provider>,
   document.getElementById("root")
 );
 

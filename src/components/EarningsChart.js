@@ -45,6 +45,7 @@ export const EarningsChart = ({ currency, yearly, quarterly }) => {
     ],
   };
   const options = {
+    maintainAspectRatio: false,
     color: "#fafafa",
     plugins: {
       legend: {
@@ -89,11 +90,7 @@ export const EarningsChart = ({ currency, yearly, quarterly }) => {
   };
   return (
     <>
-      <div
-        className='buttons'
-        // style={{ position: "relative", top: "2.8rem", left: "1rem" }}
-      >
-        <h2>Revenue/Earnings</h2>
+      <div className='buttons' style={{ position: "relative", left: "2rem" }}>
         <Button
           variant={`${intervals === yearly ? "contained" : "outlined"}`}
           size='small'

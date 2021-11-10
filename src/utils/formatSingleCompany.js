@@ -41,7 +41,11 @@ export const formatSingleCompany = (allData) => {
     } else return `${marketCap}M`;
   };
   data.marketCap = formatMarketCap(data.marketCap);
-
+  data.eps = allData[1].data.earnings.earningsChart.quarterly
+    .reduce((epsTtm, quarter) => {
+      return (epsTtm = epsTtm + quarter.actual.raw);
+    }, 0)
+    .toFixed(2);
   data.pe = (
     allData[1].data.financialData.currentPrice.raw /
     allData[1].data.earnings.earningsChart.quarterly.reduce(

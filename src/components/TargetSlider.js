@@ -37,7 +37,7 @@ export default function DiscreteSliderMarks({ low, high, mean, price }) {
         sx={{
           fontFamily: "Quicksand",
           width: "100%",
-          color: "white",
+          color: "#ced7df",
           " &": {
             marginTop: "1.5rem",
           },
@@ -49,25 +49,26 @@ export default function DiscreteSliderMarks({ low, high, mean, price }) {
             borderRadius: "0",
             width: "1.5rem",
             height: "2rem",
-            clipPath: "polygon(57% 0%,62% 0%,62% 80%,57% 80%)",
+            clipPath: "polygon(72% 0%,77% 0%,77% 100%,72% 100%)",
 
             // clipPath: "polygon(0% 100% ,65% 50%, 100% 100%)",
           },
           "& .MuiSlider-track": {
-            height: "2px",
-            color: "whitesmoke",
+            height: "5px",
+            color: "#FF6384",
             borderRadius: "0",
-            opacity: "0.7",
+            opacity: "1",
           },
           "& .MuiSlider-rail": {
-            height: "2px",
-            color: "whitesmoke",
-            opacity: "0.7",
+            height: "5px",
+            color: "#4BC096",
+            opacity: "1",
             borderRadius: "0px",
           },
           "& .MuiSlider-markLabel": {
-            color: "whitesmoke",
-            fontSize: "1.2rem",
+            fontFamily: "Quicksand",
+            color: "#ced7df",
+            fontSize: "1.7rem",
           },
           "& .MuiSlider-markLabel[data-index='0'], .MuiSlider-markLabel[data-index='2']":
             {
@@ -75,20 +76,21 @@ export default function DiscreteSliderMarks({ low, high, mean, price }) {
             },
 
           "& .MuiSlider-markLabel[data-index='1'] ": {
-            top: "-30%",
+            color: "whitesmoke",
+            top: "-90%",
           },
           "& .MuiSlider-markLabel[data-index='3']": {
-            top: "120%",
+            color: "whitesmoke",
+            top: "140%",
           },
           "& .MuiSlider-mark": {
+            opacity: 1,
             color: "white",
-            width: "5px",
-            height: "5px",
-            borderRadius: "5px",
+            width: "1rem",
+            height: "1rem",
+            borderRadius: "1rem",
           },
-          "& .MuiSlider-mark[data-index='3']": {
-            right: "10px",
-          },
+          "& .MuiSlider-mark[data-index='3']": {},
         }}
         size='small'
         aria-label='Custom marks'
