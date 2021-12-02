@@ -1,123 +1,203 @@
-import React, {
-  useContext,
-  useEffect,
-  useState,
-  useReducer,
-  useCallback,
-} from "react";
+import React, { useContext, useEffect, useReducer } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
-import { options } from "../utils/fetchOptions";
 import {
-  GET_USER_DATA,
   BUY_STOCK,
   SELL_STOCK,
-  ADD_TO_WATCHLILST,
-  DELETE_FROM_WATCHLIST,
-  SET_ACCOUNT_VALUES,
-  GET_ALL_USERS,
-  GET_ALL_PRICES,
+  EDIT_WATCHLILST,
+  GET_INITIAL_DATA,
+  EDIT_NAME,
 } from "../utils/actions";
-
+import { optionsTradier } from "../utils/fetchOptions";
 import reducer from "../reducers/user_reducer";
+
 const UserContext = React.createContext();
 export const UserProvider = ({ children }) => {
   const initialState = {
-    holdings: [],
-    watchlist: [],
-    cash: 0,
+    currentUser: {},
+    allUsers: [],
+    allPrices: [],
   };
   const [state, dispatch] = useReducer(reducer, initialState);
-  const [needToSend, setNeedToSend] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const { loginWithRedirect, logout, user: auth0User, error } = useAuth0();
+  const { user: auth0User } = useAuth0();
 
   let server = "http://localhost:5000";
-  const getUserData = async () => {
+
+  const getInitialData = async () => {
     if (!auth0User) return;
-    const mongodbUser = await axios.get(
-      `${server}/api/v1/users/${auth0User.email}`,
-      options
-    );
-    dispatch({ type: GET_USER_DATA, payload: mongodbUser.data });
-  };
+    let allUsers;
+    try {
+      const res = await axios.get(`${server}/api/v1/users/`);
+      allUsers = res.data;
+    } catch (err) {
+      console.log(err);
+    }
 
-  const sendUserData = async () => {
-    axios.patch(`${server}/api/v1/users/${state.email}`, state);
-  };
+    const allSymbolsString = allUsers
+      .reduce((acc, user) => {
+        if (user.holdings.length === 0) return acc;
+        user.holdings.forEach((stock) => {
+          if (!acc.includes(stock.symbol)) {
+            acc.push(stock.symbol);
+          }
+        });
+        return acc;
+      }, [])
+      .join(",");
+    let allPrices;
 
-  const getAllUsers = async () => {
-    const { data: allUsers } = await axios.get(
-      `${server}/api/v1/users/`,
-      options
-    );
-    dispatch({ type: GET_ALL_USERS, payload: allUsers });
-  };
+    if (allSymbolsString.length === 0) {
+      allPrices = [];
+    } else {
+      try {
+        const allPricesRes = await axios(
+          optionsTradier(allSymbolsString.replace(/(\.|-)/g, "/"))
+        );
 
-  const getPrices = async () => {
-    if (!state.allUsers) return;
-
-    const allSymbols = state.allUsers.reduce((acc, user) => {
-      if (user.holdings.length === 0) return acc;
-      user.holdings.forEach((stock) => {
-        if (!acc.includes(stock.symbol)) {
-          acc.push(stock.symbol);
+        if (Array.isArray(allPricesRes.data.quotes.quote)) {
+          allPrices = allPricesRes.data.quotes.quote.map((stock) => {
+            return {
+              symbol: stock.symbol.replace("/", "-"),
+              price: stock.ask,
+              prevClose: stock.prevclose,
+            };
+          });
+        } else {
+          allPrices = [
+            {
+              symbol: allPricesRes.data.quotes.quote.symbol.replace("/", "-"),
+              price: allPricesRes.data.quotes.quote.ask,
+              prevClose: allPricesRes.data.quotes.quote.prevclose,
+            },
+          ];
         }
-      });
-      return acc;
-    }, []);
-    const { data: allPrices } = await axios.patch(
-      `${server}/api/v1/prices`,
-      allSymbols
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
+    const currentUser = allUsers.find((user) => user.email === auth0User.email);
+    console.log("before dispatching");
+
+    dispatch({
+      type: GET_INITIAL_DATA,
+      payload: { allUsers, allPrices, currentUser },
+    });
+    console.log("💥Initial data was fetched");
+  };
+
+  const buyStock = async (symbol, quantity, price) => {
+    let res;
+    try {
+      res = await axios.patch(
+        `${server}/api/v1/users/buy/${state.currentUser._id}`,
+        {
+          symbol,
+          quantity,
+          price,
+        }
+      );
+    } catch (err) {
+      console.log(err);
+    }
+
+    if (res.data === "wrong_price") return "wrong_price";
+
+    const updatedUser = res.data;
+
+    if (!updatedUser) {
+      return null;
+    }
+    dispatch({ type: BUY_STOCK, payload: { updatedUser, symbol, price } });
+    return "success";
+  };
+
+  const sellStock = async (symbol, quantity, price) => {
+    let res;
+    try {
+      res = await axios.patch(
+        `${server}/api/v1/users/sell/${state.currentUser._id}`,
+        {
+          symbol,
+          quantity,
+          price,
+        }
+      );
+    } catch (err) {
+      console.log(err);
+    }
+    if (res.data === "wrong_price") return "wrong_price";
+
+    const updatedUser = res.data;
+
+    if (!updatedUser) {
+      return null;
+    }
+
+    dispatch({ type: SELL_STOCK, payload: { updatedUser } });
+    return "success";
+  };
+
+  const editName = async (newName) => {
+    let res;
+    try {
+      res = await axios.patch(
+        `${server}/api/v1/users/editname/${state.currentUser._id}`,
+        {
+          newName,
+        }
+      );
+    } catch (err) {
+      res = null;
+    }
+
+    if (res) {
+      dispatch({ type: EDIT_NAME, payload: newName });
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  const addToWatchlist = (symbol, watchlist) => {
+    dispatch({ type: EDIT_WATCHLILST, payload: watchlist.concat(symbol) });
+    axios.patch(
+      `${server}/api/v1/users/editwatchlist/${state.currentUser._id}`,
+      { symbol }
     );
-    dispatch({ type: GET_ALL_PRICES, payload: allPrices });
-    dispatch({ type: SET_ACCOUNT_VALUES });
   };
 
-  const buyStock = (symbol, quantity, price) => {
-    dispatch({ type: BUY_STOCK, payload: { symbol, quantity, price } });
-    setNeedToSend(true);
-  };
-  const sellStock = (symbol, quantity, price) => {
-    dispatch({ type: SELL_STOCK, payload: { symbol, quantity, price } });
-    setNeedToSend(true);
+  const delFromWatchlist = (symbol, watchlist) => {
+    dispatch({
+      type: EDIT_WATCHLILST,
+      payload: watchlist.filter((ticker) => ticker !== symbol),
+    });
+    axios.patch(
+      `${server}/api/v1/users/editwatchlist/${state.currentUser._id}`,
+      { symbol }
+    );
   };
 
   useEffect(() => {
-    if (!needToSend) return;
-    sendUserData();
-    return () => {
-      setNeedToSend(false);
-    };
-  }, [state]);
-
-  useEffect(() => {
-    getUserData();
-    getAllUsers();
-    getPrices();
-    setLoading(false);
+    getInitialData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth0User]);
 
   return (
-    !loading && (
-      <UserContext.Provider
-        value={{
-          ...state,
-          loginWithRedirect,
-          logout,
-          error,
-          buyStock,
-          sellStock,
-          sendUserData,
-          getAllUsers,
-        }}
-      >
-        {children}
-      </UserContext.Provider>
-    )
+    <UserContext.Provider
+      value={{
+        ...state,
+        buyStock,
+        sellStock,
+        editName,
+        addToWatchlist,
+        delFromWatchlist,
+      }}
+    >
+      {children}
+    </UserContext.Provider>
   );
 };
-// make sure use
 export const useUserContext = () => {
   return useContext(UserContext);
 };

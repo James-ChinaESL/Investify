@@ -1,12 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Bar } from "react-chartjs-2";
 import Button from "@mui/material/Button";
-// import { defaults } from "react-chartjs-2";
+import styled from "styled-components";
 
-// defaults.global.defaultFontFamily = "Montserrat";
 export const EarningsChart = ({ currency, yearly, quarterly }) => {
-  currency = currency === "USD" ? "$" : currency;
   const [intervals, setIntervals] = useState(yearly);
+
+  if (!(currency && yearly && quarterly)) {
+    return (
+      <Wrapper>
+        <div className='no_data'>No data to display</div>
+      </Wrapper>
+    );
+  }
+
+  currency = currency === "USD" ? "$" : currency;
   const units = intervals[0].revenue.raw > 10 ** 9 ? "B" : "M";
 
   const data = {
@@ -95,6 +103,9 @@ export const EarningsChart = ({ currency, yearly, quarterly }) => {
           variant={`${intervals === yearly ? "contained" : "outlined"}`}
           size='small'
           onClick={() => setIntervals(yearly)}
+          sx={{
+            marginRight: "0.5rem",
+          }}
         >
           Yearly
         </Button>
@@ -110,3 +121,21 @@ export const EarningsChart = ({ currency, yearly, quarterly }) => {
     </>
   );
 };
+const Wrapper = styled.div`
+  & {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    font-size: 2rem;
+  }
+  .buttons {
+    button:first-of-type {
+      margin-right: 0.5rem;
+    }
+  }
+  .no_data {
+    margin-left: 5rem;
+  }
+`;

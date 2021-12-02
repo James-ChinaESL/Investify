@@ -22,13 +22,13 @@ export default Message;
 
 const Wrapper = styled.div`
   .message_container {
-    z-index: 1000;
+    z-index: 100000;
     position: fixed;
     top: 120%;
     left: 50%;
     transform: translate(-50%, -50%);
     height: 10rem;
-    width: 70rem;
+    width: 85rem;
     opacity: 0;
     border-radius: 15px;
     box-shadow: var(--box-shadow);
@@ -52,10 +52,12 @@ const Wrapper = styled.div`
     svg {
       font-size: 3.5rem;
       margin-right: 1.5rem;
+      margin-left: 1.5rem;
     }
     .message {
       font-weight: bolder;
       letter-spacing: 2px;
+      text-align: center;
     }
   }
 `;

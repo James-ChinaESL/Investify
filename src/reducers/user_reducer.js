@@ -1,100 +1,105 @@
 import {
-  GET_USER_DATA,
   BUY_STOCK,
   SELL_STOCK,
-  ADD_TO_WATCHLILST,
-  DELETE_FROM_WATCHLIST,
-  SET_ACCOUNT_VALUES,
-  GET_ALL_USERS,
-  GET_ALL_PRICES,
+  EDIT_WATCHLILST,
+  GET_INITIAL_DATA,
+  EDIT_NAME,
 } from "../utils/actions";
-// export const
 const user_reducer = (state, action) => {
-  if (action.type === GET_USER_DATA) {
-    return { ...state, ...action.payload };
+  if (action.type === GET_INITIAL_DATA) {
+    return {
+      currentUser: {
+        _id: action.payload.currentUser._id,
+        userName: action.payload.currentUser.userName,
+      },
+      allPrices: action.payload.allPrices,
+      allUsers: action.payload.allUsers.map((user) => {
+        return {
+          ...user,
+          accountValue: parseFloat(
+            (
+              user.cash +
+              user.holdings.reduce((acc, stock) => {
+                return (acc =
+                  acc +
+                  stock.quantity *
+                    action.payload.allPrices.find(
+                      (company) => company.symbol === stock.symbol
+                    ).price);
+              }, 0)
+            ).toFixed(2)
+          ),
+        };
+      }),
+    };
   }
 
   if (action.type === BUY_STOCK) {
-    const { symbol, quantity, price } = action.payload;
-    const foundStock = state.holdings.find((stock) => stock.symbol === symbol);
-    if (foundStock) {
-      foundStock.average = parseFloat(
-        (
-          (foundStock.quantity * foundStock.average + quantity * price) /
-          (foundStock.quantity + quantity)
-        ).toFixed(2)
-      );
-      foundStock.quantity += quantity;
+    const { updatedUser, symbol, price } = action.payload;
 
-      return {
-        ...state,
-        holdings: state.holdings.map((stock) => {
-          if (stock.symbol === symbol) return foundStock;
-          return stock;
-        }),
-        cash: parseFloat((state.cash - quantity * price).toFixed(2)),
-      };
-    } else {
-      return {
-        ...state,
-        holdings: [...state.holdings, { symbol, quantity, average: price }],
-        cash: parseFloat((state.cash - quantity * price).toFixed(2)),
-      };
-    }
-  }
-
-  if (action.type === SELL_STOCK) {
-    const { symbol, quantity, price } = action.payload;
-    const foundStock = state.holdings.find((stock) => stock.symbol === symbol);
-    foundStock.quantity -= quantity;
-    if (foundStock.quantity === 0) {
-      return {
-        ...state,
-        holdings: state.holdings.filter((stock) => stock.symbol !== symbol),
-        cash: parseFloat((state.cash + quantity * price).toFixed(2)),
-      };
-    }
-
-    return {
-      ...state,
-      holdings: state.holdings.map((stock) => {
-        if (stock.symbol === symbol) return foundStock;
-        return stock;
-      }),
-      cash: parseFloat((state.cash + quantity * price).toFixed(2)),
-    };
-  }
-
-  if (action.type === GET_ALL_USERS) {
-    return {
-      ...state,
-      allUsers: action.payload,
-    };
-  }
-
-  if (action.type === GET_ALL_PRICES) {
-    return {
-      ...state,
-      allPrices: action.payload,
-    };
-  }
-  if (action.type === SET_ACCOUNT_VALUES) {
     return {
       ...state,
       allUsers: state.allUsers.map((user) => {
-        return {
-          ...user,
-          accountValue:
-            user.cash +
-            user.holdings.reduce((acc, stock) => {
-              return (acc =
-                acc +
-                stock.quantity *
-                  state.allPrices.find(
-                    (company) => company.symbol === stock.symbol
-                  ).price);
-            }, 0),
-        };
+        if (user._id === state.currentUser._id) {
+          return {
+            accountValue: user.accountValue,
+            ...updatedUser,
+          };
+        } else {
+          return user;
+        }
+      }),
+      allPrices: state.allPrices.find((stock) => stock.symbol === symbol)
+        ? state.allPrices.map((stock) => {
+            if (stock.symbol === symbol) return { symbol, price };
+            return stock;
+          })
+        : state.allPrices.concat({ symbol, price }),
+    };
+  }
+
+  if (action.type === SELL_STOCK) {
+    const { updatedUser } = action.payload;
+
+    return {
+      ...state,
+      allUsers: state.allUsers.map((user) => {
+        if (user._id === state.currentUser._id) {
+          return {
+            accountValue: user.accountValue,
+            ...updatedUser,
+          };
+        } else {
+          return user;
+        }
+      }),
+    };
+  }
+
+  if (action.type === EDIT_NAME) {
+    return {
+      ...state,
+      currentUser: { ...state.currentUser, userName: action.payload },
+      allUsers: state.allUsers.map((user) => {
+        if (user._id !== state.currentUser._id) {
+          return user;
+        }
+        return { ...user, userName: action.payload };
+      }),
+    };
+  }
+
+  if (action.type === EDIT_WATCHLILST) {
+    return {
+      ...state,
+      allUsers: state.allUsers.map((user) => {
+        if (user._id === state.currentUser._id) {
+          return {
+            ...user,
+            watchlist: action.payload,
+          };
+        }
+        return user;
       }),
     };
   }

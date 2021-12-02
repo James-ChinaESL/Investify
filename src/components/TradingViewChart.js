@@ -39,9 +39,10 @@ const TradingViewChart = ({ ticker }) => {
         }
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ticker]);
 
-  return <div ref={ref} className='chart' />;
+  return <div ref={ref} className='chart card' />;
 };
 
 export default TradingViewChart;

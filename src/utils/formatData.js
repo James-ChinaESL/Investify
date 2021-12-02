@@ -1,17 +1,40 @@
-export const formatData = (stocks) => {
-  return stocks.map((stock) => {
+export const formatDataList = (res) => {
+  return res.data.quoteResponse.result.map((stock) => {
     return {
-      ...stock,
+      symbol: stock.symbol,
+      regularMarketPrice: stock.regularMarketPrice,
+      fiftyTwoWeekHigh: stock.fiftyTwoWeekHigh,
+      fiftyTwoWeekLow: stock.fiftyTwoWeekLow,
       shortName: formatName(stock),
       marketCap: formatMarketCap(stock),
       marketCaptoSort: stock.marketCap,
-      regularMarketChangePercent: stock.regularMarketChangePercent.toFixed(2),
+      regularMarketChangePercent: stock?.regularMarketChangePercent?.toFixed(2),
+      priceRelativeToYear: priceRelativeToYear(stock),
+    };
+  });
+};
+
+export const formatDataDayMovers = (res) => {
+  return res.data.quotes.map((stock) => {
+    return {
+      // ...stock,
+      symbol: stock.symbol,
+      regularMarketPrice: stock.regularMarketPrice,
+      fiftyTwoWeekHigh: stock.fiftyTwoWeekHigh,
+      fiftyTwoWeekLow: stock.fiftyTwoWeekLow,
+      shortName: formatName(stock),
+      marketCap: formatMarketCap(stock),
+      marketCaptoSort: stock.marketCap,
+      regularMarketChangePercent: stock?.regularMarketChangePercent?.toFixed(2),
       priceRelativeToYear: priceRelativeToYear(stock),
     };
   });
 };
 
 const formatName = (stock) => {
+  if (!stock.shortName) {
+    return;
+  }
   let stockName = stock.shortName
     .slice(0, stock.shortName.indexOf(" "))
     .toLowerCase()
@@ -28,9 +51,6 @@ const formatName = (stock) => {
       break;
     case "AMD":
       stockName = "AMD";
-      break;
-    case "EA":
-      stockName = "EA";
       break;
 
     case "DIS":
@@ -51,9 +71,7 @@ const formatName = (stock) => {
     case "MDB":
       stockName = "MongoDB";
       break;
-    case "JNJ":
-      stockName = "Johnson";
-      break;
+
     case "EA":
       stockName = "EA";
       break;
@@ -63,6 +81,7 @@ const formatName = (stock) => {
   return stockName;
 };
 const formatMarketCap = (stock) => {
+  if (!stock.marketCap) return;
   if (`${stock.marketCap}`.length >= 13) {
     return `${(stock.marketCap / 10 ** 12).toFixed(3)} T`;
   } else {
@@ -72,7 +91,7 @@ const formatMarketCap = (stock) => {
 
 const priceRelativeToYear = (stock) => {
   return (
-    (stock.regularMarketPrice - stock.fiftyTwoWeekLow) /
-    (stock.fiftyTwoWeekHigh - stock.regularMarketPrice)
+    (stock?.regularMarketPrice - stock?.fiftyTwoWeekLow) /
+      (stock?.fiftyTwoWeekHigh - stock?.regularMarketPrice) || null
   );
 };

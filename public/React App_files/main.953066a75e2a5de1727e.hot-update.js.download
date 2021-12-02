@@ -1,0 +1,486 @@
+webpackHotUpdate("main",{
+
+/***/ "./src/components/Navbar.js":
+/*!**********************************!*\
+  !*** ./src/components/Navbar.js ***!
+  \**********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* WEBPACK VAR INJECTION */(function(__react_refresh_utils__, __react_refresh_error_overlay__) {/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+/* harmony import */ var _auth0_auth0_react__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @auth0/auth0-react */ "./node_modules/@auth0/auth0-react/dist/auth0-react.esm.js");
+/* harmony import */ var _contexts_userContext__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../contexts/userContext */ "./src/contexts/userContext.js");
+/* harmony import */ var _mui_material_Button__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @mui/material/Button */ "./node_modules/@mui/material/Button/index.js");
+/* harmony import */ var _mui_material_Menu__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @mui/material/Menu */ "./node_modules/@mui/material/Menu/index.js");
+/* harmony import */ var _mui_material_MenuItem__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @mui/material/MenuItem */ "./node_modules/@mui/material/MenuItem/index.js");
+/* harmony import */ var _NameEditor__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./NameEditor */ "./src/components/NameEditor.js");
+/* harmony import */ var _mui_icons_material__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @mui/icons-material */ "./node_modules/@mui/icons-material/esm/index.js");
+/* harmony import */ var _SearchStocks__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./SearchStocks */ "./src/components/SearchStocks.js");
+/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! react/jsx-dev-runtime */ "./node_modules/react/jsx-dev-runtime.js");
+/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_11__);
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ./node_modules/react-refresh/runtime.js */ "./node_modules/react-refresh/runtime.js");
+__webpack_require__.$Refresh$.setup(module.i);
+
+var _jsxFileName = "D:\\MyCode\\Investify\\src\\components\\Navbar.js",
+    _s = __webpack_require__.$Refresh$.signature();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const Navbar = () => {
+  _s();
+
+  const {
+    isAuthenticated,
+    loginWithRedirect,
+    logout
+  } = Object(_auth0_auth0_react__WEBPACK_IMPORTED_MODULE_3__["useAuth0"])();
+  const {
+    currentUser,
+    editName
+  } = Object(_contexts_userContext__WEBPACK_IMPORTED_MODULE_4__["useUserContext"])();
+  const [isNameEditorOpened, setIsNameEditorOpened] = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(false);
+  const nameButton = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])(null);
+  const path = Object(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["useLocation"])().pathname;
+  const [anchorEl, setAnchorEl] = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(null);
+  const open = Boolean(anchorEl);
+
+  const logoutHandler = () => {
+    setAnchorEl(null);
+    logout();
+  };
+
+  const handleClick = event => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const editNameHandler = () => {
+    setAnchorEl(null);
+    setIsNameEditorOpened(true);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  return /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_11__["jsxDEV"])(Wrapper, {
+    children: [isNameEditorOpened && /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_11__["jsxDEV"])(_NameEditor__WEBPACK_IMPORTED_MODULE_8__["default"], {
+      close: () => setIsNameEditorOpened(false),
+      editName: editName,
+      currentUser: currentUser
+    }, void 0, false, {
+      fileName: _jsxFileName,
+      lineNumber: 42,
+      columnNumber: 9
+    }, undefined), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_11__["jsxDEV"])("nav", {
+      className: "navbar",
+      children: [currentUser.userName && /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_11__["jsxDEV"])(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_11__["Fragment"], {
+        children: /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_11__["jsxDEV"])("div", {
+          className: "links",
+          children: [/*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_11__["jsxDEV"])(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
+            className: `btn ${path === "/stocks" ? "active" : null}`,
+            to: "/stocks",
+            children: "Stocks"
+          }, void 0, false, {
+            fileName: _jsxFileName,
+            lineNumber: 52,
+            columnNumber: 15
+          }, undefined), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_11__["jsxDEV"])(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
+            className: `btn ${path === "/watchlist" ? "active" : null}`,
+            to: "/watchlist",
+            children: "Watchlist"
+          }, void 0, false, {
+            fileName: _jsxFileName,
+            lineNumber: 59,
+            columnNumber: 15
+          }, undefined), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_11__["jsxDEV"])(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
+            className: `btn ${path === `/portfolio/${currentUser.userName}` ? "active" : null}`,
+            to: `/portfolio/${currentUser.userName}`,
+            children: "MyPortfolio"
+          }, void 0, false, {
+            fileName: _jsxFileName,
+            lineNumber: 65,
+            columnNumber: 15
+          }, undefined), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_11__["jsxDEV"])(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
+            className: `btn ${path === "/allplayers" ? "active" : null}`,
+            to: "/allplayers",
+            children: "AllPlayers"
+          }, void 0, false, {
+            fileName: _jsxFileName,
+            lineNumber: 76,
+            columnNumber: 15
+          }, undefined)]
+        }, void 0, true, {
+          fileName: _jsxFileName,
+          lineNumber: 51,
+          columnNumber: 13
+        }, undefined)
+      }, void 0, false), currentUser.userName && /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_11__["jsxDEV"])(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_11__["Fragment"], {
+        children: [/*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_11__["jsxDEV"])("button", {
+          className: "btn name name-button",
+          id: "basic-button",
+          "aria-controls": "basic-menu",
+          "aria-haspopup": "false",
+          "aria-expanded": open ? false : undefined,
+          style: {
+            minWidth: "10rem"
+          },
+          ref: nameButton,
+          onClick: handleClick,
+          children: currentUser.userName
+        }, void 0, false, {
+          fileName: _jsxFileName,
+          lineNumber: 88,
+          columnNumber: 13
+        }, undefined), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_11__["jsxDEV"])(_mui_material_Menu__WEBPACK_IMPORTED_MODULE_6__["default"], {
+          id: "basic-menu",
+          anchorEl: anchorEl,
+          open: open,
+          onClose: handleClose,
+          MenuListProps: {
+            "aria-labelledby": "basic-button"
+          },
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "center"
+          },
+          transformOrigin: {
+            vertical: "top",
+            horizontal: "center"
+          },
+          sx: {
+            ".MuiPaper-root ": {
+              width: nameButton.current ? getComputedStyle(nameButton.current).width : `100px`,
+              boxSizing: "content-box",
+              marginTop: "-2px",
+              marginRight: "0px",
+              border: "2px solid var( --clr-primary)",
+              backgroundColor: "var( --clr-primary)",
+              boxShadow: "1px 1px 3px black 0.2"
+            },
+            ".MuiList-root": {
+              backgroundColor: "var( --clr-primary)",
+              color: "#fafafa",
+              fontFamily: "Cabin",
+              padding: 0
+            },
+            ".MuiMenuItem-root": {
+              backgroundColor: "var( --clr-primary)",
+              justifyContent: "center",
+              padding: "0.5rem 1rem",
+              margiBottom: "0.3rem",
+              fontSize: "1.7rem",
+              fontFamily: "Cabin",
+              letterSpacing: "1px",
+              border: "2px solid transparent",
+              "&:hover": {
+                border: "2px solid #afa",
+                backgroundColor: "#293c55",
+                borderRadius: "5px"
+              }
+            }
+          },
+          children: /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_11__["jsxDEV"])("div", {
+            children: [/*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_11__["jsxDEV"])(_mui_material_MenuItem__WEBPACK_IMPORTED_MODULE_7__["default"], {
+              onClick: editNameHandler,
+              sx: {},
+              children: "Edit name"
+            }, void 0, false, {
+              fileName: _jsxFileName,
+              lineNumber: 156,
+              columnNumber: 17
+            }, undefined), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_11__["jsxDEV"])(_mui_material_MenuItem__WEBPACK_IMPORTED_MODULE_7__["default"], {
+              onClick: logoutHandler,
+              children: "Logout"
+            }, void 0, false, {
+              fileName: _jsxFileName,
+              lineNumber: 160,
+              columnNumber: 17
+            }, undefined)]
+          }, void 0, true, {
+            fileName: _jsxFileName,
+            lineNumber: 155,
+            columnNumber: 15
+          }, undefined)
+        }, void 0, false, {
+          fileName: _jsxFileName,
+          lineNumber: 103,
+          columnNumber: 13
+        }, undefined)]
+      }, void 0, true), !isAuthenticated && /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_11__["jsxDEV"])("button", {
+        className: "login",
+        onClick: loginWithRedirect,
+        children: /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_11__["jsxDEV"])("span", {
+          children: "Log in | Sign up"
+        }, void 0, false, {
+          fileName: _jsxFileName,
+          lineNumber: 167,
+          columnNumber: 13
+        }, undefined)
+      }, void 0, false, {
+        fileName: _jsxFileName,
+        lineNumber: 166,
+        columnNumber: 11
+      }, undefined)]
+    }, void 0, true, {
+      fileName: _jsxFileName,
+      lineNumber: 48,
+      columnNumber: 7
+    }, undefined), /*#__PURE__*/Object(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_11__["jsxDEV"])(_SearchStocks__WEBPACK_IMPORTED_MODULE_10__["default"], {}, void 0, false, {
+      fileName: _jsxFileName,
+      lineNumber: 171,
+      columnNumber: 7
+    }, undefined)]
+  }, void 0, true, {
+    fileName: _jsxFileName,
+    lineNumber: 40,
+    columnNumber: 5
+  }, undefined);
+};
+
+_s(Navbar, "zN+BI83im/Qm8eSWdBdIVx+EGMo=", false, function () {
+  return [_auth0_auth0_react__WEBPACK_IMPORTED_MODULE_3__["useAuth0"], _contexts_userContext__WEBPACK_IMPORTED_MODULE_4__["useUserContext"], react_router_dom__WEBPACK_IMPORTED_MODULE_2__["useLocation"]];
+});
+
+_c = Navbar;
+/* harmony default export */ __webpack_exports__["default"] = (Navbar);
+const Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].div`
+  .navbar {
+    position: relative;
+
+    padding: 2rem 2rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 3rem 2rem;
+    /* text-align: right;  */
+    .links {
+      display: flex;
+      justify-content: space-between;
+      min-width: min(55rem, 50vw);
+    }
+    .btn {
+      display: inline-block;
+      transition: background-color 0.2s;
+      text-shadow: var(--text-shadow);
+      user-select: none;
+      color: whitesmoke;
+      font-size: 2rem;
+      cursor: pointer;
+      text-decoration: none;
+      font-family: var(--ff-primary);
+      letter-spacing: 1px;
+      padding: 0.3rem 0.6rem;
+      border: 2px solid transparent;
+      border-radius: 5px;
+
+      &:hover {
+        border: 2px solid #afa;
+      }
+      &:active {
+        transform: scale(0.97);
+        color: #afa;
+      }
+
+      &.active {
+        color: #afa;
+        color: var(--clr-primary);
+        font-weight: bolder;
+        text-shadow: -2px 0px 2px rgba(255, 255, 255, 0.4);
+        background-color: #afa;
+      }
+    }
+    button.btn {
+      &.name {
+        text-decoration: none;
+        background-color: var(--clr-primary);
+        padding: 0.5rem;
+        border-radius: 5px;
+        text-shadow: none;
+        transition: 0.3s;
+        border: 2px solid #afa;
+        /* color: red; */
+        /* font-size: 1.8rem; */
+      }
+    }
+    .login {
+      border: none;
+      position: relative;
+      top: 2px;
+      margin-right: 4rem;
+      padding: 0.6rem 1.2rem;
+      font-size: 2rem;
+      background-color: #afa;
+      color: #3f39a2;
+      border-radius: 5px;
+
+      font-weight: bold;
+      font-family: "Roboto";
+      background-size: 250% 100%;
+      transition: all 0.4s ease-in-out;
+      background-image: linear-gradient(
+        to right,
+        #72e672,
+        #afa,
+        #8eef54,
+        #72e672,
+        #8eef54,
+        #afa
+      );
+
+      box-shadow: 0 4px 15px 0 #ced7df40;
+      span {
+        text-shadow: -2px 0px 2px rgba(255, 255, 255, 0.4);
+      }
+
+      &:hover {
+        background-position: 100% 0;
+        transition: all 0.4s ease-in-out;
+      }
+    }
+
+    .title {
+      display: inline-block;
+      user-select: none;
+      /* pointer-events: painted; */
+      font-family: "Goldman", cursive;
+      cursor: default;
+      letter-spacing: 1px;
+      font-size: 3rem;
+      -webkit-background-clip: text;
+      color: transparent;
+      background-image: linear-gradient(
+        to right,
+        #72e672,
+        #afa,
+        #8eef54,
+        #72e672,
+        #8eef54,
+        #afa
+      );
+      background-size: 300% 100%;
+
+      text-shadow: 0.5rem 1rem 2rem rgba(0, 0, 0, 0.4);
+      transition: all 0.4s ease-in-out;
+      &:hover {
+        background-position: 100% 0;
+
+        text-shadow: 0.5rem 1rem 2rem rgba(0, 0, 0, 0.2);
+      }
+      span {
+        display: inline-block;
+        top: 0;
+        transition: top 0.3s;
+      }
+      span:hover {
+        position: relative;
+        top: -5px;
+        transform: scale(1.05);
+        color: #afa;
+      }
+    }
+  }
+`;
+_c2 = Wrapper;
+
+var _c, _c2;
+
+__webpack_require__.$Refresh$.register(_c, "Navbar");
+__webpack_require__.$Refresh$.register(_c2, "Wrapper");
+
+const currentExports = __react_refresh_utils__.getModuleExports(module.i);
+__react_refresh_utils__.registerExportsForReactRefresh(currentExports, module.i);
+
+if (true) {
+  const isHotUpdate = !!module.hot.data;
+  const prevExports = isHotUpdate ? module.hot.data.prevExports : null;
+
+  if (__react_refresh_utils__.isReactRefreshBoundary(currentExports)) {
+    module.hot.dispose(
+      /**
+       * A callback to performs a full refresh if React has unrecoverable errors,
+       * and also caches the to-be-disposed module.
+       * @param {*} data A hot module data object from Webpack HMR.
+       * @returns {void}
+       */
+      function hotDisposeCallback(data) {
+        // We have to mutate the data object to get data registered and cached
+        data.prevExports = currentExports;
+      }
+    );
+    module.hot.accept(
+      /**
+       * An error handler to allow self-recovering behaviours.
+       * @param {Error} error An error occurred during evaluation of a module.
+       * @returns {void}
+       */
+      function hotErrorHandler(error) {
+        if (
+          typeof __react_refresh_error_overlay__ !== 'undefined' &&
+          __react_refresh_error_overlay__
+        ) {
+          __react_refresh_error_overlay__.handleRuntimeError(error);
+        }
+
+        if (typeof __react_refresh_test__ !== 'undefined' && __react_refresh_test__) {
+          if (window.onHotAcceptError) {
+            window.onHotAcceptError(error.message);
+          }
+        }
+
+        __webpack_require__.c[module.i].hot.accept(hotErrorHandler);
+      }
+    );
+
+    if (isHotUpdate) {
+      if (
+        __react_refresh_utils__.isReactRefreshBoundary(prevExports) &&
+        __react_refresh_utils__.shouldInvalidateReactRefreshBoundary(prevExports, currentExports)
+      ) {
+        module.hot.invalidate();
+      } else {
+        __react_refresh_utils__.enqueueUpdate(
+          /**
+           * A function to dismiss the error overlay after performing React refresh.
+           * @returns {void}
+           */
+          function updateCallback() {
+            if (
+              typeof __react_refresh_error_overlay__ !== 'undefined' &&
+              __react_refresh_error_overlay__
+            ) {
+              __react_refresh_error_overlay__.clearRuntimeErrors();
+            }
+          }
+        );
+      }
+    }
+  } else {
+    if (isHotUpdate && __react_refresh_utils__.isReactRefreshBoundary(prevExports)) {
+      module.hot.invalidate();
+    }
+  }
+}
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js"), __webpack_require__(/*! ./node_modules/react-dev-utils/refreshOverlayInterop.js */ "./node_modules/react-dev-utils/refreshOverlayInterop.js")))
+
+/***/ })
+
+})
+//# sourceMappingURL=main.953066a75e2a5de1727e.hot-update.js.map

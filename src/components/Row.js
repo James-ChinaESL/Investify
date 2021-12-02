@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import styled from "styled-components";
 import PriceSlider from "./PriceSlider";
 import { v4 as uuidv4 } from "uuid";
+import { Link } from "react-router-dom";
+import { device } from "../utils/breakpoints";
+let server = "http://localhost:5000";
 
-function Row({
+const Row = ({
   shortName,
   fiftyTwoWeekHigh: high,
   fiftyTwoWeekLow: low,
@@ -12,24 +15,33 @@ function Row({
   regularMarketChangePercent: change,
   symbol,
   rank,
-}) {
+}) => {
+  const logo = useRef(null);
+
+  useEffect(() => {
+    logo.current.onerror = (e) => {
+      e.target.src = `${server}/logos/default.png`;
+      e.target.onerror = null;
+    };
+  }, []);
+
   return (
     <Wrapper>
       <div className='table__row'>
         <div className='rank'>{rank}</div>
-        <div className='join'>
+        <div className='name-logo-group'>
           <div className='image-container'>
             <img
+              ref={logo}
               className='company-logo'
-              src={`./logos/${symbol}.png`}
-              // src={`https://finnhub.io/api/logo?symbol=${symbol}`}
+              src={`${server}/logos/${symbol}.webp`}
               alt='logo'
             />
           </div>
-          <a className='name-link' href={`company/${symbol}`}>
+          <Link className='name-link' to={`/company/${symbol}`}>
             <div className='name'> {shortName}</div>
             <div className='ticker'>{symbol}</div>
-          </a>
+          </Link>
         </div>
         <div className='market-cap'>${marketCap}</div>
         <div className='price'>${price}</div>
@@ -37,19 +49,27 @@ function Row({
           {change}%
         </div>
         <div className='price-slider'>
-          <PriceSlider low={low} high={high} price={price} key={uuidv4()} />
+          <div className='slider-wrapper'>
+            <PriceSlider low={low} high={high} price={price} key={uuidv4()} />
+          </div>
         </div>
       </div>
     </Wrapper>
   );
-}
+};
 const Wrapper = styled.div`
   .table__row {
-    display: flex;
-    justify-content: space-around;
-    background-color: var(--clr-row);
+    padding: 0 2.5rem 0 1.5rem;
+    display: grid;
+    grid-template-columns:
+      minmax(5rem, 7rem) minmax(17rem, max-content) minmax(12rem, 1fr)
+      minmax(8.2rem, 1fr)
+      minmax(12rem, 1fr) minmax(28rem, 1fr);
+    justify-content: center;
+    background-color: var(--clr-primary);
+
     :hover {
-      background-color: var(--clr-row-hover);
+      background-color: var(--clr-primary-hover);
     }
     .rank,
     .market-cap,
@@ -57,29 +77,25 @@ const Wrapper = styled.div`
     .day-change,
     .company-logo,
     .image-container {
-      font-family: var(--ff-numbers), sans-serif;
+      font-family: var(--ff-primary), sans-serif;
       vertical-align: middle;
       line-height: 6.5rem;
-      text-align: right;
+      text-align: center;
     }
-    .rank {
-      margin-left: 1.5rem;
-      width: 2.2rem;
-    }
-    .join {
+
+    .name-logo-group {
       display: flex;
+      margin-left: min(3rem, 2vw);
       .image-container {
         width: 4rem;
         height: 6.5rem;
-
         .company-logo {
           height: 4rem;
           width: 4rem;
         }
       }
       .name-link {
-        margin-left: 2rem;
-        width: 9.6rem;
+        margin-left: 1.5rem;
         text-decoration: none;
         &,
         &:link,
@@ -91,27 +107,17 @@ const Wrapper = styled.div`
         }
         .name {
           margin-top: 1.5rem;
-          font-size: 2rem;
+          font-size: 1.1em;
           font-weight: 600;
-          &:hover,
-          .ticker {
-          }
+          letter-spacing: 1px;
         }
         .ticker {
-          font-size: 1.5rem;
+          font-size: 0.7em;
         }
       }
     }
-    .market-cap {
-      width: 12rem;
-      text-align: right;
-      margin-left: 0rem;
-    }
-    .price {
-      width: 8.2rem;
-    }
+
     .day-change {
-      width: 7.2rem;
       &.red {
         color: #fa5555;
       }
@@ -119,14 +125,46 @@ const Wrapper = styled.div`
         color: #afa;
       }
     }
-    .price-slider {
-      width: 20rem;
-      margin-right: 4.5rem;
+    .slider-wrapper {
+      padding: 0 3rem;
     }
 
-    @media (max-width: 880px) {
-      .price-slider {
-        width: 14rem;
+    @media ${device.tabletL} {
+      grid-template-columns:
+        minmax(5rem, 7rem) minmax(17rem, max-content) minmax(12rem, 1fr)
+        minmax(8.2rem, 1fr)
+        minmax(12rem, 1fr) minmax(20rem, 1fr);
+      @media (max-width: 700px) {
+        padding: 0 2rem 0 3rem;
+        width: 100vw;
+        grid-template-columns:
+          16rem minmax(8rem, 1fr)
+          minmax(8.2rem, 1fr)
+          minmax(8rem, 1fr);
+        .rank {
+          display: none;
+        }
+        .name-logo-group {
+          margin-left: 1rem;
+        }
+        .price-slider {
+          display: none;
+        }
+      }
+      @media (max-width: 500px) {
+        font-size: 1.8rem;
+      }
+      @media ${device.mobileL} {
+        grid-template-columns:
+          minmax(16rem, max-content)
+          minmax(8.2rem, 1fr)
+          minmax(8rem, 1fr);
+        .name-logo-group {
+          margin-left: 0.5rem;
+        }
+        .market-cap {
+          display: none;
+        }
       }
     }
   }

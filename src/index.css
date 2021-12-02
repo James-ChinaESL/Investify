@@ -5,6 +5,11 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Quicksand&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Copse&family=Delius&family=Itim&family=Kalam:wght@700&family=Pridi&family=Rancho&family=Vollkorn+SC&family=Yomogi&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Baloo+2:wght@500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Fredericka+the+Great&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Wallpoet&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Akronim&family=Baloo+2:wght@700&family=Bowlby+One+SC&family=Bungee&family=Cute+Font&family=Goldman:wght@700&family=Hanuman:wght@700&family=Lalezar&family=Monoton&family=Pridi:wght@500&family=Racing+Sans+One&family=Sanchez&family=Skranji:wght@700&family=Wallpoet&display=swap");
 :root {
   --body-gradient: linear-gradient(
     0deg,
@@ -12,24 +17,25 @@
     rgba(52, 62, 89, 1) 75%,
     rgba(52, 62, 89, 1) 100%
   );
-  --card-gradient: linear-gradient(170deg, #2b2d3e 0%, #2b2d3e 100%);
+
   --fc-primary: #fafafa;
   --fc-disabled: #ced7df;
   --fc-secondary: #ffffff;
 
-  --clr-row: #2b2d3e;
-  --clr-row-hover: #223144;
-  --clr-field: #293c55;
+  --clr-primary: #2b2d3e;
+  --clr-primary-hover: #223144;
+  --clr-secondary: #293c55;
+  --clr-tertiary: #c5dcff;
   /* --clr-black: #223144; */
   /* --clr-blue: #3f8fc3; */
-  --ff-primary: "Raleway", sans-serif;
-  --ff-secondary: "Roboto", sans-serif;
+  --ff-primary: "Cabin", sans-serif;
+  --ff-secondary: "Raleway", sans-serif;
   --ff-tertiary: "Open Sans", sans-serif;
   --ff-numbers: "Quicksand", sans-serif;
-  --ff-big-numbers: "Cabin", sans-serif;
   --transition: all 0.3s linear;
   --box-shadow: 1px 1px 3px black;
   --text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.35);
+  --text-shadow-small: 0px 4px 4px rgba(0, 0, 0, 0.2);
 }
 
 *,
@@ -42,20 +48,20 @@
 html {
   font-size: 62.5%;
 }
-@media (min-width: 1250px) {
+@media (min-width: 1440px) {
   html {
     font-size: 70%;
   }
 }
-@media (max-width: 1030px) {
+@media (max-width: 1024px) {
   html {
     font-size: 55%;
   }
 }
 
-@media (max-width: 850px) {
+@media screen and (max-width: 450px) {
   html {
-    font-size: 50%;
+    font-size: 48%;
   }
 }
 body {
@@ -65,10 +71,56 @@ body {
   background: var(--body-gradient);
   background-repeat: no-repeat;
   font-family: var(--ff-primary);
+  min-height: 110vh;
 }
 h1 {
   font-weight: 400;
+  letter-spacing: 1px;
 }
 h2 {
   font-weight: 400;
+  letter-spacing: 1px;
+}
+.card {
+  padding: 1rem 2rem 2rem;
+  font-family: var(--ff-primary);
+  background-color: var(--clr-primary);
+  border-radius: 15px;
+}
+.positive {
+  color: #afa;
+}
+.negative {
+  color: #fa5555;
+}
+
+.btn {
+  display: inline-block;
+  transition: background-color 0.2s;
+  user-select: none;
+  color: whitesmoke;
+  font-size: 2rem;
+  cursor: pointer;
+  text-decoration: none;
+  font-family: var(--ff-primary);
+  letter-spacing: 1px;
+  padding: 0.3rem 0.6rem;
+  border: 2px solid transparent;
+  border-radius: 5px;
+  background-color: transparent;
+}
+.btn.active {
+  color: #afa;
+  color: var(--clr-primary);
+  font-weight: bolder;
+  text-shadow: -2px 0px 2px rgba(255, 255, 255, 0.4);
+  background-color: #afa;
+}
+.btn:hover {
+  border: 2px solid #afa;
+  text-shadow: var(--text-shadow-small);
+}
+.btn:active {
+  transform: scale(0.97);
+  color: #afa;
 }

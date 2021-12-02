@@ -1,40 +1,40 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import Table from "./components/Table";
 import Navbar from "./components/Navbar";
-import SearchStocks from "./components/SearchStocks";
+import Stocks from "./pages/Stocks";
 import SingleStock from "./pages/SingleStock";
-import HomePage from "./pages/HomePage";
 import Portfolio from "./pages/Portfolio";
 import Watchlist from "./pages/Watchlist";
-import { useUserContext } from "./contexts/userContext";
+import AllPlayers from "./pages/AllPlayers";
+import { useAuth0 } from "@auth0/auth0-react";
+import LandingPage from "./pages/LandingPage";
 
-const list =
-  "AAPL,MSFT,BKNG, GOOG,AMZN,FB,BRK-B,TSLA,NVDA,V,BABA,JNJ,WMT,MA,NSRGY,DIS,ADBE,PYPL,NFLX,NKE,CSCO,KO,PEP,INTC,RYDAF,SHOP,MCD,TMUS,AMD,SONY,SBUX,IBM,OGZPY,SBRCY,ABNB,UBER,DELL,ZM,TWTR,ADDDF,HMC,SPOT,HPQ,MDB,U,EA,YNDX,CAJ,PINS,SNAP";
-
-export default function App(props) {
+const App = () => {
+  const { isAuthenticated } = useAuth0();
   return (
-    <Router>
-      <Navbar />
-      <Switch>
-        <Route exact path='/'>
-          <HomePage />
-        </Route>
-        <Route path='/stocks'>
-          <SearchStocks />
-          <Table list={list} />
-        </Route>
-        <Route path='/company/:ticker'>
-          <SingleStock />
-        </Route>
+    <>
+      <Router>
+        {isAuthenticated && <Navbar />}
 
-        <Route path='/portfolio/:name'>
-          <Portfolio />
-        </Route>
-        <Route path='/watchlist'>
-          <Watchlist />
-        </Route>
-      </Switch>
-    </Router>
+        <Switch>
+          <Route exact path='/'>
+            {isAuthenticated ? <Stocks /> : <LandingPage />}
+          </Route>
+          <Route path='/company/:ticker'>
+            <SingleStock />
+          </Route>
+          <Route path='/portfolio/:name'>
+            <Portfolio />
+          </Route>
+          <Route path='/watchlist'>
+            <Watchlist />
+          </Route>
+          <Route path='/allplayers'>
+            <AllPlayers />
+          </Route>
+        </Switch>
+      </Router>
+    </>
   );
-}
+};
+export default App;

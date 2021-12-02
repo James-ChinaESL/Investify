@@ -4,22 +4,25 @@ import Slider from "@mui/material/Slider";
 import { v4 as uuidv4 } from "uuid";
 
 export default function DiscreteSliderMarks({ low, high, price }) {
+  if (isNaN(low + price + high)) {
+    return <div>no data to display</div>;
+  }
   let marks;
   let currentMark;
   const createMarks = (low, high, price) => {
-    currentMark = parseInt(((price - low) / (high - low)) * 100);
+    currentMark = ((price - low) / (high - low)) * 100;
     marks = [
       {
         value: 0,
-        label: `$${parseInt(low)}`,
+        label: `$${low.toFixed(1)}`,
       },
       {
         value: currentMark,
-        label: `$${parseInt(price)}`,
+        label: `$${price.toFixed(1)}`,
       },
       {
         value: 100,
-        label: `$${parseInt(high)}`,
+        label: `$${high.toFixed(1)}`,
       },
     ];
 
@@ -27,11 +30,11 @@ export default function DiscreteSliderMarks({ low, high, price }) {
   };
   marks = createMarks(low, high, price);
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box sx={{ width: "100%" }} key={uuidv4()}>
       <Slider
         sx={{
           width: "100%",
-          color: "white",
+          color: "whitesmoke",
           " &": {
             marginTop: "1.5rem",
           },
@@ -56,17 +59,18 @@ export default function DiscreteSliderMarks({ low, high, price }) {
           },
           "& .MuiSlider-markLabel": {
             color: "whitesmoke",
+
             fontSize: "1.5rem",
           },
 
           "& .MuiSlider-markLabel[data-index='1']": {
-            color: "var(--fc-disabled)",
+            color: "#fafafa",
           },
           "& .MuiSlider-markLabel[data-index='0']": {
-            top: "-30%",
+            top: "-35%",
           },
           "& .MuiSlider-markLabel[data-index='2']": {
-            top: "-30%",
+            top: "-35%",
           },
           "& .MuiSlider-mark": {
             width: "2px",
@@ -86,7 +90,6 @@ export default function DiscreteSliderMarks({ low, high, price }) {
         defaultValue={currentMark}
         valueLabelDisplay='auto'
         marks={marks}
-        key={uuidv4()}
         disabled
       />
     </Box>
