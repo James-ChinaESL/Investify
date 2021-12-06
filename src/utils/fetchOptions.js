@@ -6,7 +6,8 @@ export const popularStocks =
 
 export const popularStocksDescription = "Famous companies we face every day";
 
-const rakutenApiKey = process.env.REACT_APP_RAKUTENAPIKEY;
+// const rakutenApiKey = process.env.REACT_APP_RAKUTENAPIKEY;
+const rakutenApiKey = "35cc738db3msh25f443125aaf5dbp1ebccfjsn179ace9139a5";
 
 export const finhubApiKey = process.env.REACT_APP_FINHUBAPIKEY;
 const tradiersKey = process.env.REACT_APP_TRADIERSKEY;
