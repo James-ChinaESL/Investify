@@ -45,15 +45,15 @@ export default function DiscreteSliderMarks({ low, high, mean, price }) {
             width: "100%",
             color: "#ced7df",
             " &": {
-              marginTop: "1.5rem",
+              marginTop: "15px",
             },
             "& .MuiSlider-thumb": {
               position: "relative",
               color: "whitesmoke",
 
-              top: "1.3rem",
+              top: "13px",
               borderRadius: "0",
-              width: "1.5rem",
+              width: "15px",
               height: "27px",
               clipPath: "polygon(62% 0%,67% 0%,67% 100%,62% 100%)",
             },
@@ -72,27 +72,27 @@ export default function DiscreteSliderMarks({ low, high, mean, price }) {
             "& .MuiSlider-markLabel": {
               fontFamily: "Quicksand",
               color: "#ced7df",
-              fontSize: "1.7rem",
+              fontSize: "17px",
             },
             "& .MuiSlider-markLabel[data-index='0'], .MuiSlider-markLabel[data-index='2']":
               {
-                top: "23px",
+                top: "20px",
               },
 
             "& .MuiSlider-markLabel[data-index='1'] ": {
               color: "whitesmoke",
-              top: "-10px",
+              top: "-13px",
             },
             "& .MuiSlider-markLabel[data-index='3']": {
               color: "whitesmoke",
-              top: "45px",
+              top: "40px",
             },
             "& .MuiSlider-mark": {
               opacity: 1,
               color: "white",
-              width: "0.7rem",
-              height: "0.7rem",
-              borderRadius: "0.7rem",
+              width: "7px",
+              height: "7px",
+              borderRadius: "7px",
             },
             "& .MuiSlider-mark[data-index='3']": {},
           }}
@@ -144,15 +144,15 @@ export default function DiscreteSliderMarks({ low, high, mean, price }) {
           width: "100%",
           color: "#ced7df",
           " &": {
-            marginTop: "1.5rem",
+            marginTop: "15px",
           },
           "& .MuiSlider-thumb": {
             position: "relative",
             color: "whitesmoke",
 
-            top: "1.3rem",
+            top: "13px",
             borderRadius: "0",
-            width: "1.5rem",
+            width: "15px",
             height: "27px",
             clipPath: "polygon(62% 0%,67% 0%,67% 100%,62% 100%)",
           },
@@ -171,27 +171,27 @@ export default function DiscreteSliderMarks({ low, high, mean, price }) {
           "& .MuiSlider-markLabel": {
             fontFamily: "Quicksand",
             color: "#ced7df",
-            fontSize: "1.7rem",
+            fontSize: "17px",
           },
           "& .MuiSlider-markLabel[data-index='0'], .MuiSlider-markLabel[data-index='3']":
             {
-              top: "23px",
+              top: "20px",
             },
 
           "& .MuiSlider-markLabel[data-index='1'] ": {
             color: "#ced7df",
-            top: "45px",
+            top: "40px",
           },
           "& .MuiSlider-markLabel[data-index='2']": {
             color: "whitesmoke",
-            top: "-10px",
+            top: "-13px",
           },
           "& .MuiSlider-mark": {
             opacity: 1,
             color: "white",
-            width: "0.7rem",
-            height: "0.7rem",
-            borderRadius: "0.7rem",
+            width: "7px",
+            height: "7px",
+            borderRadius: "7px",
           },
           "& .MuiSlider-mark[data-index='3']": {},
         }}
