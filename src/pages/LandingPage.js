@@ -24,7 +24,10 @@ const LandingPage = () => {
               your virtual 10,000.00$ and try to bit other players.
             </h2>
             <div className='signup-login'>
-              <button className='call-to-action' onClick={loginWithRedirect}>
+              <button
+                className='call-to-action'
+                onClick={() => loginWithRedirect({ screen_hint: "signup" })}
+              >
                 <span>Start Investing</span>
               </button>
               <div className='existing-user'>
