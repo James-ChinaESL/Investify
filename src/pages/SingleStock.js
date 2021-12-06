@@ -27,8 +27,7 @@ import {
 import { numberWithCurrencySymbol } from "../utils/formatNumbersForUI";
 import Spinner from "../components/Spinner";
 import TradePanel from "../components/TradePanel";
-import { allData } from "../utils/singleStockAllData";
-let server = "http://localhost:5000";
+import { server } from "../utils/fetchOptions";
 
 const SingleStock = () => {
   let { ticker: tickerFromUrl } = useParams();
@@ -72,36 +71,28 @@ const SingleStock = () => {
 
   function fetchData() {
     setLoading(true);
-    /////////////////
-    // const finhubApi = `${urlCompanyProfile}${symbol}&token=${finhubApiKey}`;
-    // const mboumApi = `${urlMboum}`;
-
-    // const getFinhubData = axios.get(finhubApi);
-    // const getTradierData = axios(
-    //   optionsTradier(symbol.replace(/(\.|-)/g, "/"))
-    // );
-    // const getMboumData = axios.get(mboumApi, optionsMboum(symbol));
-    // axios
-    //   .all([getFinhubData, getMboumData, getTradierData])
-    //   .then(
-    //     axios.spread((...allData) => {
-    //       if (allData.find((res) => res.status !== 200)) {
-    //         throw new Error(`Something went wrong!`);
-    //       }
-    //       console.log(allData);
-
-    //       setData(formatSingleCompany(allData));
-    //       setLoading(false);
-    //       // console.log("fetching is over");
-    //     })
-    //   )
-    //   .catch((err) => {
-    //     alert(err);
-    //     console.log(err);
-    //   });
-    /////////////////////
-    setData(formatSingleCompany(allData));
-    setLoading(false);
+    const finhubApi = `${urlCompanyProfile}${symbol}&token=${finhubApiKey}`;
+    const mboumApi = `${urlMboum}`;
+    const getFinhubData = axios.get(finhubApi);
+    const getTradierData = axios(
+      optionsTradier(symbol.replace(/(\.|-)/g, "/"))
+    );
+    const getMboumData = axios.get(mboumApi, optionsMboum(symbol));
+    axios
+      .all([getFinhubData, getMboumData, getTradierData])
+      .then(
+        axios.spread((...allData) => {
+          if (allData.find((res) => res.status !== 200)) {
+            throw new Error(`Something went wrong!`);
+          }
+          setData(formatSingleCompany(allData));
+          setLoading(false);
+        })
+      )
+      .catch((err) => {
+        alert(err);
+        console.log(err);
+      });
   }
 
   const isInWatchList = Boolean(watchlist?.find((stock) => stock === symbol));
@@ -117,18 +108,23 @@ const SingleStock = () => {
     <Spinner />
   ) : (
     <Wrapper>
+      <h1 className='name-on-top'>{data.name}</h1>
+
       <div className='chart-container'>
         <TradingViewChart ticker={symbol} />
       </div>
 
-      <div className='main_info card'>
+      <div className='main-info card'>
         <div className='logo-name-industry'>
-          <img
-            ref={logo}
-            src={`${server}/logos/${symbol}.webp`}
-            alt='logo'
-            className='logo'
-          />
+          <div className='logo-container'>
+            <img
+              ref={logo}
+              src={`${server}/logos/${symbol}.webp`}
+              alt='logo'
+              className='logo'
+            />
+          </div>
+
           <div className='name-industry'>
             <h1 className='name'>{data.name}</h1>
             <p className='label'>{data.industry}</p>
@@ -147,13 +143,13 @@ const SingleStock = () => {
           <div className='label'>P/E</div>
         </div>
         <Button
-          className='watchlist_btn'
+          className='watchlist-btn'
           size='large'
           variant='contained'
           startIcon={isInWatchList ? <StarIcon /> : <StarOutlineIcon />}
           onClick={watchlistHander}
         >
-          <div className='btn_text'>
+          <div className='btn-text'>
             <span>Watchlist</span>
           </div>
         </Button>
@@ -219,10 +215,11 @@ const SingleStock = () => {
         </div>
       </div>
       <article className='description scrollbar card' id='style-8'>
+        <h2>Description</h2>
         <p className='description_content force-overflow'>{data.description}</p>
       </article>
 
-      <div className='analytics'>
+      <div className='analytics card'>
         <h2>Recommendation</h2>
         <div className='rating-recommendation'>
           <div
@@ -252,14 +249,15 @@ const SingleStock = () => {
         </div>
       </div>
 
-      <div className='earnings'>
+      <div className='earnings card'>
         <h2>Revenue/Earnings</h2>
-
-        {/* <EarningsChart
-          currency={data.earningsCurrency}
-          yearly={data.earningsYearly}
-          quarterly={data.earningsQuarterly}
-        /> */}
+        <div className='earnings-chart-container'>
+          <EarningsChart
+            currency={data.earningsCurrency}
+            yearly={data.earningsYearly}
+            quarterly={data.earningsQuarterly}
+          />
+        </div>
       </div>
     </Wrapper>
   );
@@ -268,10 +266,19 @@ const SingleStock = () => {
 export default SingleStock;
 const Wrapper = styled.main`
   & {
+    padding: 0;
+  }
+  .name-on-top {
+    display: none;
+  }
+  & {
     display: grid;
-    grid-template-columns: 40% 20% 10% 10% 20%;
-    grid-template-rows: 7rem 1fr 1fr;
-    grid-gap: 1rem 2rem;
+    grid-template-columns:
+      3.5fr minmax(10rem, 1fr) minmax(10rem, 1fr) minmax(10.5rem, 1fr)
+      minmax(10.5rem, 1fr) repeat(2, 1fr);
+    grid-template-rows: min-content 30rem 33rem;
+    grid-gap: 1.5rem 1.5rem;
+    padding: 1rem 3rem 2rem;
   }
   .progress_modal {
     position: fixed;
@@ -283,73 +290,57 @@ const Wrapper = styled.main`
     z-index: 1000;
   }
   h2 {
-    margin-top: 1rem;
+    font-family: var(--ff-secondary);
+    margin-top: 1.3rem;
     font-size: 2rem;
     grid-column: 1/3;
     font-weight: bolder;
     letter-spacing: 2px;
+    text-align: center;
   }
 
-  .card {
-    background: var(--clr-primary);
-    border-radius: 1.5rem;
-    box-shadow: 1px 1px 3px black;
-    padding: 0.4rem 1rem;
-  }
   .number {
     font-family: var(--ff-numbers);
     letter-spacing: 1px;
   }
   .chart-container {
     .chart {
+      padding: 0 0 0 1rem;
+
       height: 100%;
     }
     grid-row: 1/3;
   }
-  .description {
-    margin-top: 2rem;
-    height: 28rem;
-    overflow-y: scroll;
 
-    .description_content {
-      padding: 1.8rem 1rem;
-      text-align: justify;
-      &::first-letter {
-        font-family: "Dancing Script", cursive;
-        font-style: italic;
-        font-size: 3rem;
-        line-height: 0px;
-      }
-    }
-  }
-  .scrollbar::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-
-    border: 1px solid black;
-    border-radius: 10px;
-  }
-
-  .scrollbar::-webkit-scrollbar {
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-
-    width: 10px;
-    border-radius: 10px;
-  }
-
-  .scrollbar::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    background-color: var(--clr-primary);
-  }
-  .main_info {
-    grid-column: 2/6;
+  .main-info {
+    font-family: var(--ff-secondary);
+    padding: 0.8rem 2rem;
+    grid-column: 2/8;
 
     display: flex;
-    flex-direction: row;
     justify-content: space-between;
-    align-items: none;
+    .logo-name-industry {
+      h1 {
+        margin: 0;
+      }
+      display: flex;
 
+      .logo {
+        height: 5rem;
+        margin-right: 1rem;
+      }
+      .name {
+        letter-spacing: 1px;
+        font-size: 2.2rem;
+        max-width: 22rem;
+      }
+    }
+    .info {
+      font-size: 2rem;
+    }
     .label {
-      font-size: 1.3rem;
+      font-size: 1.4rem;
+      margin-bottom: 0.2rem;
     }
     .country,
     .cap,
@@ -358,33 +349,9 @@ const Wrapper = styled.main`
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      margin: 0.5rem 0 0.3rem;
-    }
-    .pe-label {
-      @media (max-width: 920px) {
-        & {
-          display: none;
-        }
-      }
     }
 
-    .logo-name-industry {
-      display: flex;
-
-      .logo {
-        height: 6rem;
-        margin-right: 1rem;
-      }
-      .name {
-        font-size: 2.5rem;
-        max-width: 22rem;
-      }
-    }
-    .info {
-      font-size: 2rem;
-    }
-
-    .watchlist_btn {
+    .watchlist-btn {
       align-self: center;
       font-size: 1.7rem;
       padding: 0.5rem 0.5rem;
@@ -397,22 +364,11 @@ const Wrapper = styled.main`
       span {
         margin: 0;
       }
-      @media (max-width: 1100px) {
-        span {
-          display: block;
-        }
-      }
     }
   }
 
-  /* margin-top: 1rem;
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        column-gap: 1rem;
-        justify-content: space-between;
-        text-align: center;
-     */
   .field {
+    font-family: var(--ff-secondary);
     background-color: var(--clr-secondary);
     border-radius: 15px;
     padding: 0.5rem 1rem;
@@ -420,91 +376,127 @@ const Wrapper = styled.main`
     align-items: center;
     justify-content: center;
     font-size: 2rem;
+    &.number {
+      font-family: var(--ff-numbers);
+    }
   }
-
+  .trade,
+  .holdings,
+  .ratios {
+    padding: 0rem 1.6rem 1.5rem;
+  }
   .trade {
-    grid-column: 2/3;
-    padding: 0rem 1rem 1rem;
+    padding: 0rem 1.2rem 1.5rem;
+
+    grid-column: 2/4;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 4.7rem 5rem 7rem;
+    /* grid-template-rows: 3rem 4rem 6rem 6rem; */
+    grid-row-gap: 1rem;
+
+    align-content: space-between;
     column-gap: 1rem;
-
-    .amount-container {
-      display: flex;
-      justify-content: space-around;
-      background-color: var(--clr-secondary);
-      border-radius: 15px;
-      .quantity {
-        &::-webkit-inner-spin-button {
-          -webkit-appearance: none;
-        }
-        padding: 0;
-        color: var(--clr-primary);
-        font-size: 2.3rem;
-        text-align: center;
-        width: 50%;
-        border: none;
-        border-top-left-radius: 15px;
-        border-bottom-left-radius: 15px;
-        outline: none;
-        /* border: 1px solid var(--clr-blue); */
-
-        font-weight: bold;
-      }
-      .set-quantity {
-        width: 50%;
+    .price-amount-container {
+      /* height: 6rem; */
+      grid-column: 1/3;
+      display: grid;
+      grid-template-columns: 1fr minmax(35%, 11rem);
+      justify-content: space-between;
+      grid-column-gap: 1rem;
+      .amount-container {
+        /* max-width: 12rem; */
+        justify-self: end;
         display: flex;
-        flex-direction: column;
-        /* justify-content: space-between; */
-        cursor: pointer;
-        line-height: 0;
-        .increase {
-          height: 50%;
-          border-bottom: 1px solid var(--fc-disabled);
-        }
-
-        .set {
-          position: relative;
-          top: 0.3rem;
+        justify-content: space-around;
+        background-color: var(--clr-secondary);
+        border-radius: 15px;
+        .quantity {
+          &::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+          }
+          padding: 0;
+          /* height: 3rem; */
+          color: var(--clr-primary);
+          font-size: 2.3rem;
           text-align: center;
-          cursor: pointer;
-          font-size: 2rem;
+          width: 60%;
+          border: none;
+          border-top-left-radius: 15px;
+          border-bottom-left-radius: 15px;
+          outline: none;
           font-weight: bold;
-          line-height: 0;
-          padding-right: 2px;
+          &:focus {
+            outline: 2px solid var(--clr-tertiary);
+          }
+        }
+        .set-quantity {
+          width: 40%;
+          display: flex;
+          flex-direction: column;
+          cursor: pointer;
+          /* line-height: 0; */
+          .increase {
+            /* height: 50%; */
+            border-bottom: 1px solid var(--fc-disabled);
+            text-align: center;
+          }
+          .decrease {
+            text-align: center;
+          }
+
+          .set {
+            position: relative;
+            top: 0.3rem;
+            cursor: pointer;
+            font-size: 20px;
+            font-weight: bold;
+            line-height: 0;
+            padding-right: 2px;
+          }
         }
       }
     }
-    .total_cost {
-      margin-top: 2rem;
+
+    .total-percent-wrapper {
+      /* height: 4rem; */
+      margin-top: 1rem;
       grid-column: 1/3;
-      letter-spacing: 2px;
-      font-weight: bolder;
+      grid-row: 3/4;
+      align-self: end;
+      .total-cost {
+        height: 45px;
+        letter-spacing: 2px;
+        font-weight: bolder;
+      }
+
+      p {
+        color: var(--fc-disabled);
+        font-size: 1.5rem;
+        text-align: center;
+      }
     }
     /* } */
-    p {
-      color: var(--fc-disabled);
-      font-size: 1.3rem;
-      grid-column: 1/3;
-    }
-
-    .max {
-      margin-top: 1rem;
-      border-top-left-radius: 10px;
-      border-top-right-radius: 10px;
-      color: var(--fc-disabled);
-      padding-bottom: 1px;
-      position: relative;
-      top: 3px;
-      z-index: 2;
-      span {
-        font-size: 1.5rem;
-      }
+    .buy-group,
+    .sell-group {
+      grid-row: 4/5;
     }
     .group {
-      margin-bottom: 0.5rem;
+      align-self: end;
+      .max {
+        text-align: center;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        color: var(--fc-disabled);
+        padding-bottom: 1px;
+        position: relative;
+        top: 3px;
+        z-index: 2;
+        span {
+          font-size: 1.5rem;
+        }
+      }
     }
+
     .buy_max {
       background-color: #1b4905;
     }
@@ -517,83 +509,87 @@ const Wrapper = styled.main`
       width: 100%;
     }
   }
+  .left,
+  .right {
+    font-size: 1.6rem;
+  }
+  .left {
+    justify-content: start;
+  }
   .holdings {
-    grid-column: 3/5;
-    font-size: 1rem;
+    grid-column: 4/6;
     display: grid;
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: minmax(9.2rem, 2fr) 1fr;
     grid-template-rows: repeat(min-content, 6);
     column-gap: 1rem;
     row-gap: 1rem;
-    padding: 0 1rem 1.5rem;
-    .title {
-      /* margin-bottom: -10px; */
-    }
-    .left {
-      justify-content: start;
-      font-size: 1.6rem;
-    }
-    .right {
-      /* justify-content: end; */
-      font-size: 1.6rem;
-      &.positive {
-        font-size: 1.7rem;
 
-        color: #afa;
-        letter-spacing: 1px;
-        text-shadow: var(--text-shadow);
-      }
-      &.negative {
-        font-size: 1.8rem;
-
-        letter-spacing: 1px;
-        color: #fa5555;
-        text-shadow: var(--text-shadow);
-      }
+    .positive {
+      color: #afa;
+      letter-spacing: 1px;
+      text-shadow: var(--text-shadow);
+    }
+    .negative {
+      letter-spacing: 1px;
+      color: #fa5555;
+      text-shadow: var(--text-shadow);
     }
   }
   .ratios {
-    grid-column: 5/6;
+    grid-column: 6/8;
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: repeat(1fr, 5);
     column-gap: 1rem;
     row-gap: 1rem;
-    padding: 0 1rem 1.5rem;
-    .left {
-      justify-content: start;
-      font-size: 1.6rem;
+  }
+
+  .description {
+    overflow-y: scroll;
+    grid-row: 3/4;
+    padding: 0rem 1rem;
+
+    .description_content {
+      padding: 1.8rem 1rem;
+      text-align: justify;
+      &::first-letter {
+        font-family: "Dancing Script", cursive;
+        font-style: italic;
+        font-size: 3rem;
+        line-height: 0px;
+      }
+      font-size: 1.7rem;
     }
-    .right {
-      /* justify-content: end; */
-      font-size: 1.6rem;
+    &.scrollbar::-webkit-scrollbar-track {
+      -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+
+      border: 2px solid var(--fc-disabled);
+      border-radius: 10px;
     }
-    li {
-      list-style: none;
-      text-align: left;
+
+    &.scrollbar::-webkit-scrollbar {
+      -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+
+      width: 10px;
+      border-radius: 10px;
+    }
+
+    &.scrollbar::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+      background-color: var(--fc-disabled);
     }
   }
-  /* display: grid;
-        column-gap: 1rem;
-        grid-template-columns: 50% 50%;
-        margin-right: 3rem;
-        margin-top: 2rem; */
-  /* 
-        h2 {
-          font-size: 2rem;
-          font-family: "Raleway";
-          font-weight: bolder;
-          letter-spacing: 2px;
-          margin: 1rem 2rem;
-        } */
 
   .analytics {
-    grid-column: 2/4;
+    grid-column: 2/5;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     padding: 0rem 3rem;
+
     .rating-recommendation {
-      margin: 2rem 0 0;
       display: flex;
-      justify-content: start;
+
       align-items: center;
       .rating {
         border-radius: 15px;
@@ -616,9 +612,9 @@ const Wrapper = styled.main`
         }
       }
       .recommendation {
-        letter-spacing: 1px;
+        letter-spacing: 1.5px;
         font-weight: bolder;
-        font-size: 2.3rem;
+        font-size: 2rem;
         font-family: var(--ff-tertiary);
       }
       .number_analyses {
@@ -627,17 +623,321 @@ const Wrapper = styled.main`
     }
     .targets {
       h2 {
-        margin: 4rem 2rem 2rem;
+        margin: 2rem 2rem 3rem -2.5rem;
       }
       .target_slider {
-        margin-left: 1.5rem;
-        width: 90%;
+        margin: 0 0 2.3rem 3rem;
+        width: 80%;
       }
     }
   }
   .earnings {
-    grid-column: 4/6;
-    margin-right: -1rem;
-    height: 22rem;
+    h2 {
+      margin-bottom: 1rem;
+    }
+    grid-column: 5/8;
+    /* margin-right: ; */
+    /* height: 30rem; */
+    .earnings-chart-container {
+      height: 25rem;
+    }
+  }
+
+  @media (max-width: 1100px) {
+    .trade,
+    .holdings,
+    .ratios {
+      padding: 0rem 1rem 1rem;
+    }
+    .main-info .pe {
+      display: none;
+    }
+  }
+  @media (max-width: 930px) {
+    .main-info .pe {
+      display: flex;
+    }
+    .left,
+    .right {
+      font-size: 1.8rem;
+    }
+
+    & {
+      /* padding: 0 max(2rem, 5vw); */
+      padding: 0 4rem;
+      @media (max-width: 620px) {
+        padding: 0 2rem;
+        grid-gap: 1rem 1rem;
+      }
+      grid-template-columns: 4fr 3fr;
+
+      grid-template-rows: 7rem 30rem 30rem 30rem min-content;
+    }
+    .card {
+      padding: 0.5rem 2rem 1.5rem;
+    }
+    .trade,
+    .holdings,
+    .ratios {
+      grid-column-gap: 10%;
+    }
+    .chart-container {
+      grid-area: 2/1/3/2;
+    }
+    .main-info {
+      grid-area: 1/1/2/3;
+      padding: 0.8rem 2rem;
+      @media (max-width: 700px) {
+        .pe {
+          display: none;
+        }
+      }
+      @media (max-width: 600px) {
+        .country {
+          display: none;
+        }
+      }
+    }
+    .trade {
+      grid-area: 2/2/3/3;
+
+      .price-amount-container {
+        grid-column-gap: 10%;
+      }
+    }
+    .holdings {
+      grid-area: 3/2/4/3;
+    }
+    .ratios {
+      grid-area: 4/2/5/3;
+    }
+    .analytics {
+      padding-bottom: 0;
+      grid-area: 3/1/4/2;
+      .rating-recommendation {
+        /* margin-left: 3rem; */
+        align-self: center;
+      }
+
+      .targets {
+        margin-left: 0rem;
+        align-self: center;
+
+        width: 85%;
+      }
+    }
+    .earnings {
+      width: 50vw;
+      grid-area: 4/1/5/2;
+      .earnings-chart-container {
+        height: 21.5rem;
+      }
+    }
+    .description {
+      p.description_content.force-overflow {
+        font-size: 2rem;
+      }
+      grid-area: 5/1/6/3;
+      overflow: visible;
+    }
+  }
+
+  @media (max-width: 520px) {
+    h1.name-on-top {
+      display: block;
+    }
+    & {
+      padding: 0 4rem;
+      grid-template-columns: 1fr;
+      grid-template-rows: min-content;
+      grid-row-gap: 1rem;
+      @media (max-width: 450px) {
+        padding: 0 2rem;
+      }
+      @media (max-width: 350px) {
+        padding: 0 1.5rem;
+      }
+    }
+    .name-on-top {
+      grid-row: 1/2;
+      text-align: center;
+    }
+    .main-info {
+      grid-row: 2/3;
+      grid-column: 1/2;
+      .name-industry {
+        display: none;
+      }
+      .pe {
+        display: flex;
+        @media (max-width: 400px) {
+          & {
+            display: none;
+          }
+        }
+      }
+    }
+    .chart-container {
+      grid-row: 3/4;
+      grid-column: 1/2;
+      height: 30rem;
+    }
+
+    .trade {
+      padding: 0 6rem 2rem;
+      @media (max-width: 450px) {
+        padding: 0 3rem 2rem;
+      }
+      grid-row: 4/5;
+      grid-column: 1/2;
+      height: 30rem;
+    }
+    .holdings {
+      padding: 0 3rem 2rem;
+      height: 30rem;
+
+      grid-row: 5/6;
+      grid-column: 1/2;
+    }
+    .ratios {
+      padding: 0 3rem 2rem;
+      height: 30rem;
+
+      grid-row: 6/7;
+      grid-column: 1/2;
+    }
+    .analytics {
+      grid-row: 7/8;
+      grid-column: 1/2;
+      height: 32rem;
+      .rating-recommendation {
+        margin-left: 0rem;
+        align-self: start;
+      }
+      .targets {
+        margin-left: -2rem;
+      }
+    }
+    .earnings {
+      grid-row: 8/9;
+      grid-column: 1/2;
+      width: 100%;
+      .earnings-chart-container {
+        margin: 0 auto;
+        width: 75vw;
+      }
+      height: 30rem;
+    }
+    .description {
+      padding: 0 1rem;
+      grid-row: 9/10;
+      grid-column: 1/2;
+    }
+  }
+  @media (min-width: 930px) {
+    .earnings,
+    .analytics,
+    .description {
+      margin-top: 0.5rem;
+    }
+  }
+  @media (min-width: 1440px) {
+    & {
+      grid-gap: 2rem 2rem;
+      padding: 1rem 5vw 3rem;
+    }
+  }
+  @media (min-width: 1720px) {
+    & {
+      grid-gap: 2rem 2rem;
+      padding: 1rem 10rem 3rem;
+    }
+  }
+  @media (min-width: 621px) and (max-width: 1050px) and (max-resolution: 96dpi) {
+    .main-info .pe {
+      display: flex;
+    }
+    .left,
+    .right {
+      font-size: 1.8rem;
+    }
+
+    & {
+      padding: 0 max(2rem, 5vw);
+      @media (max-width: 620px) {
+        padding: 0 2rem;
+        grid-gap: 1rem 1rem;
+      }
+      grid-template-columns: 4fr 3fr;
+
+      grid-template-rows: 7rem 30rem 30rem 30rem min-content;
+    }
+    .card {
+      padding: 0.5rem 2rem 1.5rem;
+    }
+    .trade,
+    .holdings,
+    .ratios {
+      grid-column-gap: 10%;
+    }
+    .chart-container {
+      grid-area: 2/1/3/2;
+    }
+    .main-info {
+      grid-area: 1/1/2/3;
+      padding: 0.8rem 2rem;
+      @media (max-width: 700px) {
+        .pe {
+          display: none;
+        }
+      }
+      @media (max-width: 600px) {
+        .country {
+          display: none;
+        }
+      }
+    }
+    .trade {
+      grid-area: 2/2/3/3;
+
+      .price-amount-container {
+        grid-column-gap: 10%;
+      }
+    }
+    .holdings {
+      grid-area: 3/2/4/3;
+    }
+    .ratios {
+      grid-area: 4/2/5/3;
+    }
+    .analytics {
+      padding-bottom: 0;
+      grid-area: 3/1/4/2;
+      .rating-recommendation {
+        /* margin-left: 3rem; */
+        align-self: center;
+      }
+
+      .targets {
+        margin-left: 0rem;
+        align-self: center;
+
+        width: 85%;
+      }
+    }
+    .earnings {
+      width: 50vw;
+      grid-area: 4/1/5/2;
+      .earnings-chart-container {
+        height: 21.5rem;
+      }
+    }
+    .description {
+      p.description_content.force-overflow {
+        font-size: 2rem;
+      }
+      grid-area: 5/1/6/3;
+      overflow: visible;
+    }
   }
 `;

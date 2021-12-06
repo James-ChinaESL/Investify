@@ -1,9 +1,8 @@
 import * as React from "react";
-import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import { popularStocks, urlDayGainers } from "../utils/fetchOptions";
+import { popularStocks } from "../utils/fetchOptions";
 import { v4 as uuidv4 } from "uuid";
 
 export default function SelectGroup({ content, setContent }) {
@@ -11,7 +10,6 @@ export default function SelectGroup({ content, setContent }) {
 
   const handleChange = (event) => {
     const type = event.target.value;
-    // console.log(event.target);
     setGroup(type);
     switch (type) {
       case "popularStocks":
@@ -31,6 +29,7 @@ export default function SelectGroup({ content, setContent }) {
         break;
       case "undervaluedLargeCap":
         setContent({ type: "undervaluedLargeCap" });
+        break;
       default:
         break;
     }
@@ -49,16 +48,22 @@ export default function SelectGroup({ content, setContent }) {
           fontWeight: "bold",
           color: "#2b2d3e",
 
-          ".css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input":
+          // ".css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input":
+          //   {
+          //     padding: "0.5rem 3rem",
+          //   },
+          // " .css-1gfq6dx-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline, .css-1d3z3hw-MuiOutlinedInput-notchedOutline ":
+          //   {
+          //     border: "none",
+          //   },
+
+          ".MuiSelect-select.MuiSelect-outlined.MuiOutlinedInput-input.MuiInputBase-input":
             {
               padding: "0.5rem 3rem",
-              //   textAlign: "center",
-              //   backgroundColor: "red",
             },
-          " .css-1gfq6dx-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline, .css-1d3z3hw-MuiOutlinedInput-notchedOutline ":
-            {
-              border: "none",
-            },
+          " .Mui-focused, .MuiOutlinedInput-notchedOutline ": {
+            border: "none",
+          },
         }}
       >
         {[

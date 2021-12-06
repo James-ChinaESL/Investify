@@ -4,7 +4,7 @@ import PriceSlider from "./PriceSlider";
 import { v4 as uuidv4 } from "uuid";
 import { Link } from "react-router-dom";
 import { device } from "../utils/breakpoints";
-let server = "http://localhost:5000";
+import { server } from "../utils/fetchOptions";
 
 const Row = ({
   shortName,
@@ -61,8 +61,9 @@ const Wrapper = styled.div`
   .table__row {
     padding: 0 2.5rem 0 1.5rem;
     display: grid;
+    align-items: center;
     grid-template-columns:
-      minmax(5rem, 7rem) minmax(17rem, max-content) minmax(12rem, 1fr)
+      minmax(5rem, 7rem) 17.5rem minmax(12rem, 1fr)
       minmax(8.2rem, 1fr)
       minmax(12rem, 1fr) minmax(28rem, 1fr);
     justify-content: center;
@@ -95,6 +96,8 @@ const Wrapper = styled.div`
         }
       }
       .name-link {
+        width: 12rem;
+
         margin-left: 1.5rem;
         text-decoration: none;
         &,
@@ -107,7 +110,7 @@ const Wrapper = styled.div`
         }
         .name {
           margin-top: 1.5rem;
-          font-size: 1.1em;
+          font-size: 1em;
           font-weight: 600;
           letter-spacing: 1px;
         }

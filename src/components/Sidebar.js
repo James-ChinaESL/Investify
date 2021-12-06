@@ -60,6 +60,8 @@ const Wrapper = styled.div`
     row-gap: 1rem;
     box-shadow: var(--box-shadow);
     transition: 0.3s all linear;
+    transition-delay: 150ms;
+
     transform: translate(-100%);
     z-index: 10000;
   }
@@ -79,11 +81,12 @@ const Wrapper = styled.div`
     border-color: transparent;
     color: #fa5555;
     transition: var(--transition);
+
     cursor: pointer;
     margin-top: 0.8rem;
   }
-  .close-btn:hover {
-    color: red;
+  .close-btn:active {
+    transform: scale(0.9);
   }
   .sidebar-links {
     display: flex;
@@ -101,6 +104,11 @@ const Wrapper = styled.div`
       letter-spacing: 1px;
       &:hover {
         background-color: var(--clr-primary-hover);
+        text-shadow: 4px 1px 14px rgba(255, 255, 255, 0.8);
+      }
+      &:active {
+        transform: scale(0.95);
+        /* background-color: var(--clr-primary-hover); */
         text-shadow: 4px 1px 14px rgba(255, 255, 255, 0.8);
       }
     }

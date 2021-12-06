@@ -13,9 +13,11 @@ export const CalculationsProvider = ({ children }) => {
   };
 
   const stockDayChangeUSD = (stock) => {
+    // company.prevClose
     const company = allPrices.find(
       (company) => company.symbol === stock.symbol
     );
+
     return currentPrice(company) - company.prevClose;
   };
 
@@ -27,17 +29,14 @@ export const CalculationsProvider = ({ children }) => {
     if (!purchaseDates || purchaseDates.length === 0) {
       return;
     }
-    const boughtTodayQuantity = purchaseDates.reduce((acc, purchase) => {
-      // console.log(purchase.timestamp);
 
+    const boughtTodayQuantity = purchaseDates.reduce((acc, purchase) => {
       if (Date.now() - purchase.timestamp < 16 * 60 * 60 * 1000) {
         return (acc += purchase.quantity);
       } else {
         return acc;
       }
     }, 0);
-
-    // console.log(boughtTodayQuantity);
 
     const boughtTodayAverage =
       purchaseDates.reduce((acc, purchase) => {
@@ -62,6 +61,7 @@ export const CalculationsProvider = ({ children }) => {
 
       const returnFromOldBuyings =
         (stock.quantity - boughtTodayQuantity) * stockDayChangeUSD(stock);
+
       return returnFromTodayBuyings + returnFromOldBuyings;
     }
   };

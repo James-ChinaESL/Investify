@@ -92,7 +92,7 @@ const HoldingsTable = ({ user }) => {
   };
   return (
     <Wrapper>
-      <table className='holdings_table'>
+      <table className='holdings-table'>
         <thead>
           <tr className='header'>
             <th className='symbol sort'>
@@ -172,19 +172,19 @@ const HoldingsTable = ({ user }) => {
             holdings.map((stock) => {
               return (
                 <tr className='row' key={uuidv4()}>
-                  <td className='link'>
+                  <td className='link symbol'>
                     <Link to={`/company/${stock.symbol}`}>{stock.symbol}</Link>
                   </td>
-                  <td>{usdNoPlus(stock.price)}</td>
-                  <td className={`${defineClass(stock.dayChangeUSD)}`}>
+                  <td className='price'>{usdNoPlus(stock.price)}</td>
+                  <td className={`today ${defineClass(stock.dayChangeUSD)}`}>
                     {todayUnit === "%"
                       ? percent(stock.dayChangePercent)
                       : usdPlus(stock.dayChangeUSD)}
                   </td>
-                  <td>{usdNoPlus(stock.average)}</td>
-                  <td>{stock.quantity}</td>
-                  <td>{usdNoPlus(stock.totalValue)}</td>
-                  <td className={`${defineClass(stock.returnUSD)}`}>
+                  <td className='average'>{usdNoPlus(stock.average)}</td>
+                  <td className='quantity'>{stock.quantity}</td>
+                  <td className='total'>{usdNoPlus(stock.totalValue)}</td>
+                  <td className={`return ${defineClass(stock.returnUSD)}`}>
                     {returnUnit === "%"
                       ? percent(stock.returnPercent)
                       : usdPlus(stock.returnUSD)}
@@ -195,7 +195,7 @@ const HoldingsTable = ({ user }) => {
         </tbody>
       </table>
       {holdings.length === 0 && (
-        <h2 className='empty_label'>Your holdings list is currently empty</h2>
+        <h2 className='empty_label'>Holdings list is currently empty</h2>
       )}
     </Wrapper>
   );
@@ -255,6 +255,25 @@ const Wrapper = styled.div`
   }
   .empty_label {
     text-align: center;
+    letter-spacing: 2px;
+  }
+  @media (max-width: 750px) {
+    .today {
+      display: none;
+    }
+    .average {
+      display: none;
+    }
+  }
+  @media (max-width: 580px) {
+    .total {
+      display: none;
+    }
+  }
+  @media (max-width: 400px) {
+    .quantity {
+      display: none;
+    }
   }
 `;
 export default HoldingsTable;

@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Table from "../components/Table";
 import { popularStocks } from "../utils/fetchOptions";
 import SelectGroup from "../components/SelectGroup";
+import { MainWithPadding } from "../utils/commonPadding";
 
 const Stocks = () => {
   const [content, setContent] = useState({ list: popularStocks });
@@ -62,31 +63,26 @@ const Stocks = () => {
 };
 
 export default Stocks;
-const Wrapper = styled.div`
+const Wrapper = styled(MainWithPadding)`
   .select-container {
     display: none;
   }
   .grid {
-    padding: 0 max(12rem, 2vw);
     display: grid;
     justify-content: center;
 
     .buttons_container {
-      /* padding: 0 3rem; */
       display: grid;
       justify-content: center;
-      /* grid-template-columns: repeat(6, max-content); */
       grid-template-columns: repeat(6, minmax(min-content, 1fr));
       grid-column-gap: min(3rem, 2vw);
       width: 100%;
-      /* max-width: 120rem; */
     }
     .btn {
       border: 2px solid var(--clr-tertiary);
       letter-spacing: 1px;
-      /* &:not(:last-child) {
-      margin-right: 2rem;
-    } */
+      font-size: 1.9rem;
+      /* padding: 0. */
       &.active {
         background-color: var(--clr-tertiary);
       }
@@ -102,6 +98,7 @@ const Wrapper = styled.div`
     }
     & div.select-container {
       width: 280px;
+      height: 35px;
       background-color: var(--clr-tertiary);
       margin: 0 auto;
 
@@ -110,6 +107,11 @@ const Wrapper = styled.div`
       display: block;
       .css-hfutr2-MuiSvgIcon-root-MuiSelect-icon,
       .css-bpeome-MuiSvgIcon-root-MuiSelect-icon {
+        width: 4rem;
+        height: 4rem;
+        top: -1px;
+      }
+      svg {
         width: 4rem;
         height: 4rem;
         top: -1px;

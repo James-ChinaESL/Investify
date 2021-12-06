@@ -203,7 +203,6 @@ const Wrapper = styled.div`
   & {
     position: relative;
     margin-bottom: 3rem;
-    padding: 3rem min(5rem, 5vw) 0;
 
     .navbar {
       position: relative;
@@ -215,8 +214,6 @@ const Wrapper = styled.div`
       .sidebar-toggle {
         display: none;
       }
-
-      /* text-align: right;  */
       .links {
         display: flex;
         justify-content: space-between;
@@ -263,8 +260,6 @@ const Wrapper = styled.div`
           transition: 0.3s;
           border: 2px solid #afa;
           min-width: 120px;
-          /* color: red; */
-          /* font-size: 1.8rem; */
         }
       }
     }
@@ -274,12 +269,7 @@ const Wrapper = styled.div`
       justify-content: space-between;
       align-items: start;
       .search {
-        /* display: flex; */
-        /* position: absolute; */
-        /* right: 0;
-      bottom: 0; */
         font-size: 1.8rem;
-        /* margin-left: 5rem; */
         letter-spacing: 1px;
       }
     }
@@ -298,9 +288,6 @@ const Wrapper = styled.div`
         .sidebar-toggle {
           display: block;
           line-height: 0;
-          /* position: fixed;
-          top: 2rem;
-          left: 3rem; */
           font-size: 3.6rem;
           background: transparent;
           border-color: transparent;
@@ -314,16 +301,48 @@ const Wrapper = styled.div`
         display: none;
       }
     }
+    @media (max-width: 750px) {
+      & {
+        padding: 0 1rem;
+      }
+    }
+    @media (max-width: 580px) {
+      & {
+        padding: 0 2rem;
+      }
+    }
 
     @media (max-width: 410px) {
       .clock_and_search {
-        display: flex;
-        flex-direction: column;
-        align-items: end;
+        /* align-items: end; */
+        justify-content: end;
         .clock {
           display: none;
         }
       }
+    }
+  }
+  & {
+    padding: 3rem 12rem 0;
+  }
+  @media (max-width: 1250px) {
+    & {
+      padding: 3rem 6rem 0;
+    }
+  }
+  @media (max-width: 950px) {
+    & {
+      padding: 3rem 3rem 0;
+    }
+  }
+  @media (max-width: 750px) {
+    & {
+      padding: 3rem 2rem 0;
+    }
+  }
+  @media (max-width: 580px) {
+    & {
+      padding: 3rem 1rem 0;
     }
   }
 `;

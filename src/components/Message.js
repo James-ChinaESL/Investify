@@ -27,8 +27,9 @@ const Wrapper = styled.div`
     top: 120%;
     left: 50%;
     transform: translate(-50%, -50%);
-    height: 10rem;
-    width: 85rem;
+    /* height: 10rem; */
+    width: min(85rem, 95vw);
+    padding: 2rem 4rem;
     opacity: 0;
     border-radius: 15px;
     box-shadow: var(--box-shadow);

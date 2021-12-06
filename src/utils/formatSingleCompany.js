@@ -2,8 +2,11 @@ export const formatSingleCompany = (allData) => {
   let data = {
     name: allData[0].data?.name || "N/A",
     marketCap: allData[0].data?.marketCapitalization || "N/A",
-    industry: allData[1].data?.assetProfile?.industry || "N/A",
-    country: allData[1].data?.assetProfile?.country || "N/A",
+    industry: allData[0].data?.finnhubIndustry || "N/A",
+    country:
+      allData[1].data?.assetProfile?.country ||
+      allData[0].data?.country ||
+      "N/A",
     description: allData[1].data?.assetProfile?.longBusinessSummary || "N/A",
     earningsCurrency: allData[1].data?.earnings?.financialCurrency,
     earningsYearly: allData[1].data?.earnings?.financialsChart?.yearly,
@@ -35,8 +38,8 @@ export const formatSingleCompany = (allData) => {
           .filter((word, i, arr) => i < 2)
           .join(" ")
       : data.name;
-
   data.name = name;
+  // data.name = name.length < 15 ? name : name.slice(0, 15) + "...";
 
   const formatMarketCap = (marketCap) => {
     const length = `${parseInt(marketCap)}`.length;
@@ -50,7 +53,7 @@ export const formatSingleCompany = (allData) => {
 
   data.priceCurrency = data.currentPrice ? "USD" : allData[0].data?.currency;
   data.currentPrice =
-    data.currentPrice || allData[1].data?.financialData.currentPrice.raw;
+    data.currentPrice || allData[1].data?.financialData?.currentPrice.raw;
   const eps =
     allData[1].data.earnings?.earningsChart?.quarterly?.reduce(
       (epsTtm, quarter) => {

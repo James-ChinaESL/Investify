@@ -10,18 +10,17 @@ import {
 } from "../utils/actions";
 import { optionsTradier } from "../utils/fetchOptions";
 import reducer from "../reducers/user_reducer";
+import { server } from "../utils/fetchOptions";
 
 const UserContext = React.createContext();
 export const UserProvider = ({ children }) => {
   const initialState = {
-    currentUser: {},
+    currentUser: { userName: "", _id: "" },
     allUsers: [],
     allPrices: [],
   };
   const [state, dispatch] = useReducer(reducer, initialState);
   const { user: auth0User } = useAuth0();
-
-  let server = "http://localhost:5000";
 
   const getInitialData = async () => {
     if (!auth0User) return;
@@ -77,13 +76,11 @@ export const UserProvider = ({ children }) => {
     }
 
     const currentUser = allUsers.find((user) => user.email === auth0User.email);
-    console.log("before dispatching");
 
     dispatch({
       type: GET_INITIAL_DATA,
       payload: { allUsers, allPrices, currentUser },
     });
-    console.log("💥Initial data was fetched");
   };
 
   const buyStock = async (symbol, quantity, price) => {

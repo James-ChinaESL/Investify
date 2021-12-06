@@ -20,7 +20,11 @@ const MarketClock = React.memo(() => {
 
   const currentYear = newYorkTime.getFullYear();
   const currentMonth = newYorkTime.getMonth() + 1;
-  const currentDay = newYorkTime.getDate();
+  const currentDay =
+    newYorkTime.getDate().length > 1
+      ? newYorkTime.getDate()
+      : "0" + newYorkTime.getDate();
+
   const currentDate = `${currentYear}-${currentMonth}-${currentDay}`;
 
   const currentHours = newYorkTime.getHours();
@@ -50,7 +54,6 @@ const MarketClock = React.memo(() => {
       timeTillChange =
         Date.parse(`${nearestWorkDay} ${clock.next_change}`) -
         Date.parse(`${currentDate} ${currentTime}`);
-      console.log();
     }
 
     setStatus(clock.state);
@@ -89,8 +92,6 @@ const CountDown = ({ status, timeTillNextState }) => {
   }
 
   useEffect(() => {
-    console.log(timeLeft);
-
     const timer = setTimeout(
       () => setTimeLeft(timeLeft - 60 * 1000),
       60 * 1000

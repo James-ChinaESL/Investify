@@ -144,43 +144,47 @@ const TradePanel = ({ symbol, currentPrice, currency, myQuantity }) => {
       <Message {...message} />
       <div className='trade card'>
         <h2>Trade</h2>
-        <div className='price number field'>
-          {numberWithCurrencySymbol(currentPrice, currency)}
-        </div>
+        <div className='price-amount-container'>
+          <div className='price number field'>
+            {numberWithCurrencySymbol(currentPrice, currency)}
+          </div>
 
-        <div className='amount-container'>
-          <input
-            className='quantity number'
-            type='number'
-            min='0'
-            name='quantity'
-            value={quantity}
-            onChange={quantityInputHandler}
-            onFocus={quantityFocusHandler}
-            onBlur={quantityBlurHandler}
-          />
-          <div className='set-quantity'>
-            <div className='increase' onClick={increase}>
-              <HiPlusSm className='set' />
-            </div>
-            <div className='decrease' onClick={decrease}>
-              <HiMinusSm className='set' />
+          <div className='amount-container'>
+            <input
+              className='quantity number'
+              type='number'
+              min='0'
+              name='quantity'
+              value={quantity}
+              onChange={quantityInputHandler}
+              onFocus={quantityFocusHandler}
+              onBlur={quantityBlurHandler}
+            />
+            <div className='set-quantity'>
+              <div className='increase' onClick={increase}>
+                <HiPlusSm className='set' />
+              </div>
+              <div className='decrease' onClick={decrease}>
+                <HiMinusSm className='set' />
+              </div>
             </div>
           </div>
         </div>
-        <div className='total_cost number field'>
-          {quantity
-            ? numberWithCurrencySymbol(currentPrice * quantity, currency)
-            : numberWithCurrencySymbol(0, currency)}
-        </div>
-        {/* </div> */}
+        <div className='total-percent-wrapper'>
+          <div className='total-cost number field'>
+            {quantity
+              ? numberWithCurrencySymbol(currentPrice * quantity, currency)
+              : numberWithCurrencySymbol(0, currency)}
+          </div>
+          {/* </div> */}
 
-        <p>
-          <span className='number'>
-            {percentNoPlus(((currentPrice * quantity) / accountValue) * 100)}
-          </span>
-          &nbsp; of account value
-        </p>
+          <p>
+            <span className='number'>
+              {percentNoPlus(((currentPrice * quantity) / accountValue) * 100)}
+            </span>
+            &nbsp; of account value
+          </p>
+        </div>
         <div className='buy_group group'>
           <div className='buy_max max number'>
             max:&nbsp;

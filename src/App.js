@@ -8,30 +8,33 @@ import Watchlist from "./pages/Watchlist";
 import AllPlayers from "./pages/AllPlayers";
 import { useAuth0 } from "@auth0/auth0-react";
 import LandingPage from "./pages/LandingPage";
+import PrivateRoute from "./pages/PrivateRoute";
 
 const App = () => {
   const { isAuthenticated } = useAuth0();
+
   return (
     <>
       <Router>
         {isAuthenticated && <Navbar />}
+        {/* <Navbar /> */}
 
         <Switch>
           <Route exact path='/'>
             {isAuthenticated ? <Stocks /> : <LandingPage />}
           </Route>
-          <Route path='/company/:ticker'>
+          <PrivateRoute path='/company/:ticker'>
             <SingleStock />
-          </Route>
-          <Route path='/portfolio/:name'>
+          </PrivateRoute>
+          <PrivateRoute path='/portfolio/:name'>
             <Portfolio />
-          </Route>
-          <Route path='/watchlist'>
+          </PrivateRoute>
+          <PrivateRoute path='/watchlist'>
             <Watchlist />
-          </Route>
-          <Route path='/allplayers'>
+          </PrivateRoute>
+          <PrivateRoute path='/allplayers'>
             <AllPlayers />
-          </Route>
+          </PrivateRoute>
         </Switch>
       </Router>
     </>

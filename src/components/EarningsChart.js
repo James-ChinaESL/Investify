@@ -124,13 +124,13 @@ export const EarningsChart = ({ currency, yearly, quarterly }) => {
 const Wrapper = styled.div`
   & {
     width: 100%;
-    height: 100%;
     display: flex;
     justify-content: start;
     align-items: center;
     font-size: 2rem;
   }
   .buttons {
+    margin-top: 2rem;
     button:first-of-type {
       margin-right: 0.5rem;
     }

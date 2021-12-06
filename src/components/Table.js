@@ -19,7 +19,6 @@ import { v4 as uuidv4 } from "uuid";
 import { SortButtons } from "./SortButtons";
 import Spinner from "./Spinner";
 import { device } from "../utils/breakpoints";
-import { formatedData } from "../utils/formatedData";
 
 export default function Table({ type, list }) {
   const [tableStocks, setTableStocks] = useState([]);
@@ -35,34 +34,34 @@ export default function Table({ type, list }) {
     dayLosers: urlDayLosers,
     undervaluedGrowth: urlUndervaluedGrowth,
   };
-  // let formatedData;
+  let formatedData;
 
   const fetchData = async () => {
     setIsloading(true);
 
-    // if (list) {
-    //   try {
-    //     const res = await axios.get(urlYahoo, optionsYahoo(list));
-    //     formatedData = formatDataList(res);
-    //     if (list === popularStocks) {
-    //       setDescription(popularStocksDescription);
-    //     }
-    //   } catch (err) {
-    //     alert(err);
+    if (list) {
+      try {
+        const res = await axios.get(urlYahoo, optionsYahoo(list));
+        formatedData = formatDataList(res);
+        if (list === popularStocks) {
+          setDescription(popularStocksDescription);
+        }
+      } catch (err) {
+        alert(err);
 
-    //     console.log(err);
-    //   }
-    // }
-    // if (type) {
-    //   try {
-    //     const res = await axios.get(specilaStocks[type], specilStocksOptions);
-    //     formatedData = formatDataDayMovers(res);
-    //     setDescription(res.data.description.replace(".", ""));
-    //   } catch (err) {
-    //     alert(err);
-    //     console.log(err);
-    //   }
-    // }
+        console.log(err);
+      }
+    }
+    if (type) {
+      try {
+        const res = await axios.get(specilaStocks[type], specilStocksOptions);
+        formatedData = formatDataDayMovers(res);
+        setDescription(res.data.description.replace(".", ""));
+      } catch (err) {
+        alert(err);
+        console.log(err);
+      }
+    }
 
     setTableStocks(formatedData);
     setInitialOrder(formatedData);
@@ -118,11 +117,15 @@ export default function Table({ type, list }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [type, list]);
   return isLoading ? (
-    <Spinner />
+    <>
+      <Spinner />
+    </>
   ) : (
     <Wrapper>
-      {/* <h1 className='description'>{description}</h1> */}
-      <h1 className='description'>"Famous companies we face every day"</h1>
+      <div className='description'>
+        <h1>{description}</h1>
+      </div>
+      {/* <h1 className='description'>"Famous companies we face every day"</h1> */}
       <div className='header-wrapper'>
         <div className='header-table'>
           <div className='rank'>Rank</div>
@@ -163,12 +166,12 @@ export default function Table({ type, list }) {
 
 const Wrapper = styled.div`
   .description {
-    text-align: center;
     margin: 3rem 0 2rem;
-    font-size: 2.5rem;
-    font-family: var(--ff-primary);
-    letter-spacing: 1px;
-    padding: 0 2rem;
+
+    h1 {
+      font-size: 2.2rem;
+      padding: 0 2rem;
+    }
   }
   .rows {
     margin-top: 2px;
@@ -187,7 +190,7 @@ const Wrapper = styled.div`
     padding: 0 2.5rem 0 1.5rem;
     display: grid;
     grid-template-columns:
-      minmax(5rem, 7rem) minmax(17rem, max-content) minmax(12rem, 1fr)
+      minmax(5rem, 7rem) 17.5rem minmax(12rem, 1fr)
       minmax(8.2rem, 1fr)
       minmax(12rem, 1fr) minmax(28rem, 1fr);
     background-color: var(--clr-primary);
@@ -197,6 +200,9 @@ const Wrapper = styled.div`
     text-align: center;
     line-height: 6.5rem;
     text-transform: capitalize;
+    .name-logo-group {
+      width: 17.5rem;
+    }
     @media ${device.tabletL} {
       grid-template-columns:
         minmax(5rem, 7rem) minmax(17rem, max-content) minmax(12rem, 1fr)

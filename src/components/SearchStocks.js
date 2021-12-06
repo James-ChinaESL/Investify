@@ -3,8 +3,7 @@ import React, { useEffect, useRef, useState, useCallback } from "react";
 import axios from "axios";
 import { finhubApiKey, urlSymbolLookup as url } from "../utils/fetchOptions";
 import LinearProgress from "@mui/material/LinearProgress";
-
-import Box from "@mui/material/Box";
+import { server } from "../utils/fetchOptions";
 
 const SearchStocks = React.memo(() => {
   const [loading, setLoading] = useState(false);
@@ -61,13 +60,13 @@ const SearchStocks = React.memo(() => {
             className='search-field'
           />
           <div className='magnifier'>
-            <img src='http://localhost:5000/logos/search.png' alt='search' />
+            <img src={`${server}/logos/search.png`} alt='search' />
           </div>
         </div>
         {loading && (
-          <Box sx={{ width: "100%" }}>
+          <div className='progress'>
             <LinearProgress color='inherit' />
-          </Box>
+          </div>
         )}
         {/* {searchTerm && results && ( */}
         <div
@@ -96,51 +95,78 @@ export default SearchStocks;
 
 const Wrapper = styled.div`
   .search-container {
-    width: min(25rem, 40vw);
+    /* width: 22rem; */
+    position: relative;
+    left: 2.8rem;
+    margin-right: 2.8rem;
+
+    .progress {
+      /* margin-left: -2.8rem; */
+
+      width: 22.2rem;
+    }
   }
 
   .input-container {
+    /* width: 22rem; */
+
     display: flex;
-    flex-direction: row;
+    /* flex-direction: row; */
+    justify-content: end;
   }
   .search-field {
-    width: 100%;
+    width: 16rem;
+    height: 3.5rem;
+
     padding: 10px 35px 10px 15px;
     border: none;
-    border-bottom: 1px solid black;
+    /* border-bottom: 1px solid black; */
+    background-color: whitesmoke;
     outline: none;
     font-family: inherit;
     text-transform: uppercase;
+    transition: var(--transition);
     &::placeholder {
       text-transform: none;
+    }
+    &:focus {
+      width: 22rem;
+      outline: 2px solid var(--clr-tertiary);
     }
   }
 
   .magnifier {
-    margin-top: 0.5rem;
+    float: right;
+    /* margin-top: 1rem; */
     background: transparent;
     border: none;
     outline: none;
-    margin-left: -3.5rem;
+    position: absolute;
+    right: 0.7rem;
+    top: 0.5rem;
   }
 
   .magnifier img {
-    width: 25px;
-    height: 25px;
+    width: 2.5rem;
+    height: 2.5rem;
     object-fit: cover;
   }
   .results {
+    opacity: 0;
+    height: 0;
     display: flex;
-    background-color: white;
+    background-color: whitesmoke;
     flex-direction: column;
-    height: 0px;
     transition: var(--transition);
-    z-index: -1000;
+    /* box-sizing: content-box; */
   }
   .results.show {
+    /* top: -1.5px; */
+    outline: 2px solid var(--clr-tertiary);
     height: 10rem;
+    opacity: 1;
     z-index: 2;
-    justify-content: space-evenly;
+    justify-content: space-between;
     a {
       padding: 0.3rem 2rem;
       display: flex;
@@ -148,8 +174,11 @@ const Wrapper = styled.div`
       font-size: 1.6rem;
       text-decoration: none;
       color: black;
+      line-height: 2.5rem;
       &:hover {
         text-decoration: underline;
+        text-decoration-color: var(--clr-primary);
+        background-color: var(--clr-tertiary);
       }
       .name {
         text-transform: capitalize;

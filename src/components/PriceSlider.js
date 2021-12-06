@@ -65,13 +65,15 @@ export default function DiscreteSliderMarks({ low, high, price }) {
 
           "& .MuiSlider-markLabel[data-index='1']": {
             color: "#fafafa",
+            top: "42px",
+            lineHeight: 0,
           },
-          "& .MuiSlider-markLabel[data-index='0']": {
-            top: "-35%",
-          },
-          "& .MuiSlider-markLabel[data-index='2']": {
-            top: "-35%",
-          },
+          "& .MuiSlider-markLabel[data-index='0'], & .MuiSlider-markLabel[data-index='2']":
+            {
+              top: "3px",
+              lineHeight: 0,
+            },
+
           "& .MuiSlider-mark": {
             width: "2px",
             height: "6px",

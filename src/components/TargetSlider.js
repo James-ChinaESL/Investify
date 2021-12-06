@@ -54,7 +54,7 @@ export default function DiscreteSliderMarks({ low, high, mean, price }) {
               top: "1.3rem",
               borderRadius: "0",
               width: "1.5rem",
-              height: "2rem",
+              height: "27px",
               clipPath: "polygon(62% 0%,67% 0%,67% 100%,62% 100%)",
             },
             "& .MuiSlider-track": {
@@ -76,16 +76,16 @@ export default function DiscreteSliderMarks({ low, high, mean, price }) {
             },
             "& .MuiSlider-markLabel[data-index='0'], .MuiSlider-markLabel[data-index='2']":
               {
-                top: "60%",
+                top: "23px",
               },
 
             "& .MuiSlider-markLabel[data-index='1'] ": {
               color: "whitesmoke",
-              top: "-90%",
+              top: "-10px",
             },
             "& .MuiSlider-markLabel[data-index='3']": {
               color: "whitesmoke",
-              top: "140%",
+              top: "45px",
             },
             "& .MuiSlider-mark": {
               opacity: 1,
@@ -153,7 +153,7 @@ export default function DiscreteSliderMarks({ low, high, mean, price }) {
             top: "1.3rem",
             borderRadius: "0",
             width: "1.5rem",
-            height: "2rem",
+            height: "27px",
             clipPath: "polygon(62% 0%,67% 0%,67% 100%,62% 100%)",
           },
           "& .MuiSlider-track": {
@@ -175,16 +175,16 @@ export default function DiscreteSliderMarks({ low, high, mean, price }) {
           },
           "& .MuiSlider-markLabel[data-index='0'], .MuiSlider-markLabel[data-index='3']":
             {
-              top: "60%",
+              top: "23px",
             },
 
           "& .MuiSlider-markLabel[data-index='1'] ": {
             color: "#ced7df",
-            top: "130%",
+            top: "45px",
           },
           "& .MuiSlider-markLabel[data-index='2']": {
             color: "whitesmoke",
-            top: "-70%",
+            top: "-10px",
           },
           "& .MuiSlider-mark": {
             opacity: 1,

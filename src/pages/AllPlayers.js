@@ -14,6 +14,7 @@ import { v4 as uuidv4 } from "uuid";
 import MiniButton from "../components/MiniButton";
 import { defineClass } from "../utils/defineClass";
 import Spinner from "../components/Spinner";
+import { MainWithPadding } from "../utils/commonPadding";
 
 const AllPlayers = () => {
   const { allUsers } = useUserContext();
@@ -21,7 +22,6 @@ const AllPlayers = () => {
     useCalculationsContext();
   const [todayUnit, setTodayUnit] = useState("%");
   const [returnUnit, setReturnUnit] = useState("%");
-  console.log("allUsers rendered");
 
   if (allUsers.length === 0) {
     return <Spinner />;
@@ -36,35 +36,45 @@ const AllPlayers = () => {
             <tr className='header'>
               <th>Rank</th>
               <th>Name</th>
-              <th>Account Value, $</th>
+              <th>
+                Account <br className='break' />
+                Value, $
+              </th>
               <th className='return group'>
                 <div className='label'>Return</div>
-                <MiniButton
-                  content={"$"}
-                  value={returnUnit}
-                  setValue={() => setReturnUnit("$")}
-                />
-                <MiniButton
-                  content={"%"}
-                  value={returnUnit}
-                  setValue={() => setReturnUnit("%")}
-                />
+                <div className='minibuttons'>
+                  <MiniButton
+                    content={"$"}
+                    value={returnUnit}
+                    setValue={() => setReturnUnit("$")}
+                  />
+                  <MiniButton
+                    content={"%"}
+                    value={returnUnit}
+                    setValue={() => setReturnUnit("%")}
+                  />
+                </div>
               </th>
               <th className='today group'>
                 <div className='label'>Today</div>
-                <MiniButton
-                  content={"$"}
-                  value={todayUnit}
-                  setValue={() => setTodayUnit("$")}
-                />
-                <MiniButton
-                  content={"%"}
-                  value={todayUnit}
-                  setValue={() => setTodayUnit("%")}
-                />
+                <div className='minibuttons'>
+                  <MiniButton
+                    content={"$"}
+                    value={todayUnit}
+                    setValue={() => setTodayUnit("$")}
+                  />
+                  <MiniButton
+                    content={"%"}
+                    value={todayUnit}
+                    setValue={() => setTodayUnit("%")}
+                  />
+                </div>
               </th>
-              <th>Cash, %</th>
-              <th>Investing since</th>
+              <th className='cash'>Cash, %</th>
+              <th className='reg-month'>
+                Investing
+                <br className='break' /> since
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -81,26 +91,34 @@ const AllPlayers = () => {
                         {user.userName}
                       </Link>
                     </td>
-                    <td className='account_value'>
+                    <td className='account-value'>
                       {usdNoPlus(user.accountValue)}
                     </td>
 
-                    <td className={`${defineClass(user.accountValue - 10000)}`}>
+                    <td
+                      className={`return ${defineClass(
+                        user.accountValue - 10000
+                      )}`}
+                    >
                       {returnUnit === "%"
                         ? percent((user.accountValue - 10000) / 100)
                         : usdPlus(user.accountValue - 10000)}
                     </td>
 
-                    <td className={`${defineClass(todayTotalChangeUSD(user))}`}>
+                    <td
+                      className={`today ${defineClass(
+                        todayTotalChangeUSD(user)
+                      )}`}
+                    >
                       {todayUnit === "%"
                         ? percent(todayTotalChangePercent(user))
                         : usdPlus(todayTotalChangeUSD(user))}
                     </td>
 
-                    <td>
+                    <td className='cash'>
                       {percentNoPlus((user.cash / user.accountValue) * 100)}
                     </td>
-                    <td>{investSince(user)}</td>
+                    <td className='reg-month'>{investSince(user)}</td>
                   </tr>
                 );
               })}
@@ -111,15 +129,30 @@ const AllPlayers = () => {
   );
 };
 
-const Wrapper = styled.div`
+const Wrapper = styled(MainWithPadding)`
   & {
-    padding: 0rem 4rem;
+    h1 {
+      text-align: center;
+      letter-spacing: 2px;
+      margin-bottom: 2rem;
+      font-size: 3.3rem;
+    }
+
+    /* padding: 0rem max(4rem, 5vw); */
     font-family: var(--ff-primary);
     font-size: 2rem;
+    /* @media (max-width: 700px) {
+      & {
+        padding: 2rem;
+      }
+    } */
   }
 
-  .table_container {
-    /* padding: 0; */
+  .minibuttons {
+    display: inline-block;
+  }
+  .break {
+    display: none;
   }
   table {
     font-size: 1.8rem;
@@ -128,6 +161,8 @@ const Wrapper = styled.div`
     border-collapse: collapse;
     border-radius: 15px;
     .header {
+      padding: 0 2rem;
+
       .label {
         /* margin-left: 2rem; */
         position: relative;
@@ -140,6 +175,12 @@ const Wrapper = styled.div`
       font-size: 2rem;
       padding-top: 1.5rem;
       padding-bottom: 1.5rem;
+      &:first-child {
+        padding-left: 1rem;
+      }
+      &:last-child {
+        padding-right: 1rem;
+      }
     }
 
     td {
@@ -147,7 +188,7 @@ const Wrapper = styled.div`
       padding-top: 1rem;
       padding-bottom: 1rem;
 
-      &.account_value {
+      &.account-value {
         text-align: right;
         padding-right: 5%;
       }
@@ -166,6 +207,33 @@ const Wrapper = styled.div`
     tbody {
       tr:nth-child(odd) {
         background-color: #293c55;
+      }
+    }
+    @media (max-width: 850px) {
+      th {
+        .break {
+          display: block;
+        }
+        .minibuttons {
+          display: block;
+        }
+      }
+    }
+    @media (max-width: 600px) {
+      .reg-month {
+        display: none;
+      }
+      .cash {
+        display: none;
+      }
+    }
+    @media (max-width: 440px) {
+      font-size: 1.5rem;
+      th {
+        font-size: 1.7rem;
+      }
+      .today {
+        display: none;
       }
     }
   }

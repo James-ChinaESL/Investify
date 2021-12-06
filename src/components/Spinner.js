@@ -12,6 +12,7 @@ const Spinner = () => {
 export default Spinner;
 const Wrapper = styled.div`
   & {
+    margin-top: 4rem;
     z-index: -1000;
     position: absolute;
     height: 100vh;

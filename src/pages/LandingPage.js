@@ -37,8 +37,13 @@ const LandingPage = () => {
           </div>
         </div>
         <section className='features'>
-          <div className='laptop-container'>
-            <img src='laptop.png' alt='' />
+          <div className='screenshots'>
+            <div className='phone image-container'>
+              <img src='phone-preview.png' alt='phone-preview' />
+            </div>
+            <div className='tablet image-container'>
+              <img src='tablet-preview.png' alt='tablet-preview' />
+            </div>
           </div>
           <div className='features-container'>
             <div className='icon icon--safe'>
@@ -112,16 +117,16 @@ const Wrapper = styled.div`
         .title-container {
           margin-left: auto;
           margin-right: auto;
-          width: 230px;
+          width: 28rem;
         }
         h1.heading-primary {
           font-size: 3rem;
-          text-align: center;
+          /* text-align: center; */
         }
         h2.heading-secondary {
           font-size: 2.2rem;
           line-height: 2.5rem;
-          text-align: center;
+          /* text-align: center; */
         }
 
         .signup-login {
@@ -185,9 +190,8 @@ const Wrapper = styled.div`
             color: #000;
             border: none;
             box-sizing: content-box;
-            border: 1px solid transparent;
+            /* border: 1px solid transparent; */
 
-            /* color: red; */
             text-shadow: none;
             font-weight: bold;
             box-sizing: content-box;
@@ -196,10 +200,10 @@ const Wrapper = styled.div`
             font-size: 1.6rem;
             transition: var(--transition);
             &:hover {
-              /* font-size: 1.7rem; */
-
-              text-shadow: var(--text-shadow-small);
-              border: 1px solid var(--clr-tertiary);
+              transform: scale(1.05);
+            }
+            &:active {
+              transform: scale(0.95);
             }
           }
         }
@@ -210,17 +214,57 @@ const Wrapper = styled.div`
   .features {
     background: linear-gradient(180deg, #353c57 15%, #8c95b8 100%);
     padding-bottom: 1rem;
-    @media ${device.mobileL} {
+    @media (max-width: 620px) {
       margin: 0;
       padding-bottom: 0;
     }
-    .laptop-container {
-      margin: 0rem auto;
-      padding: 0 3rem;
-      max-width: 110rem;
-      img {
+    .screenshots {
+      display: flex;
+      justify-content: space-between;
+      width: min(90vw, 110rem);
+      margin: 0 auto;
+
+      .image-container {
+        img {
+          object-fit: cover;
+          width: 100%;
+        }
+      }
+      .phone {
+        width: 25%;
+      }
+      .tablet {
+        width: 73%;
+      }
+      @media ${device.tabletL} {
+        width: max(70vw, 600px);
+        margin: 0 auto;
+      }
+      @media (max-width: 620px) {
         width: 100%;
-        object-fit: cover;
+        justify-content: center;
+
+        .phone {
+          display: none;
+        }
+
+        .tablet {
+          width: 100%;
+          padding: 0 2rem;
+        }
+      }
+      @media (max-width: 500px) {
+        .phone {
+          display: block;
+
+          width: 100%;
+          padding: 0 3rem;
+        }
+
+        .tablet {
+          display: none;
+        }
+        margin-bottom: -15rem;
       }
     }
     .features-container {
@@ -241,7 +285,7 @@ const Wrapper = styled.div`
         /* grid-row-gap: 3rem; */
         width: max(70vw, 600px);
 
-        max-width: 85vw;
+        /* max-width: 85vw; */
         justify-content: center;
         p.description {
           max-width: 400px;
@@ -280,14 +324,22 @@ const Wrapper = styled.div`
           grid-row: 17/18;
         }
       }
-      @media ${device.mobileL} {
-        margin-left: 0;
-        margin-right: 0;
-        max-width: none;
-        width: 100vw;
+      @media (max-width: 620px) {
+        width: 100%;
+        padding: 2rem 3rem 5rem;
         border-radius: 0;
-        margin-bottom: 0;
-        padding-bottom: 4rem;
+
+        margin: 2rem auto 0;
+      }
+      @media (max-width: 500px) {
+        border-top: 3px solid #b0b0b0;
+        box-shadow: 4px 0px 20px var(--clr-tertiary);
+        padding-top: 4rem;
+      }
+
+      @media ${device.mobileL} {
+        max-width: none;
+        /* width: 100vw; */
       }
 
       .call-to-action {
@@ -310,7 +362,7 @@ const Wrapper = styled.div`
         font-size: 2.7rem;
       }
       .description {
-        font-size: 2rem;
+        font-size: 1.8rem;
         text-align: center;
         line-height: 2.3rem;
         letter-spacing: 1px;
@@ -371,9 +423,11 @@ const Wrapper = styled.div`
 
     &:hover {
       background-position: 100% 0;
-      transition: all 0.4s ease-in-out;
-      /* border: 3px solid #353c57; */
-      outline: 2px solid var(--clr-tertiary);
+      animation: none;
+      transform: scale(1.05);
+    }
+    &:active {
+      transform: scale(0.95);
     }
   }
 `;

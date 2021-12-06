@@ -1,20 +1,14 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Goldman:wght@700");
 @import url("https://fonts.googleapis.com/css2?family=Raleway&display=swap");
-@import url("https://fonts.googleapis.com/css?family=Open+Sans|Roboto:400,700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Cabin&display=swap");
-
 @import url("https://fonts.googleapis.com/css2?family=Quicksand&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Copse&family=Delius&family=Itim&family=Kalam:wght@700&family=Pridi&family=Rancho&family=Vollkorn+SC&family=Yomogi&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Baloo+2:wght@500&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Fredericka+the+Great&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Wallpoet&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Akronim&family=Baloo+2:wght@700&family=Bowlby+One+SC&family=Bungee&family=Cute+Font&family=Goldman:wght@700&family=Hanuman:wght@700&family=Lalezar&family=Monoton&family=Pridi:wght@500&family=Racing+Sans+One&family=Sanchez&family=Skranji:wght@700&family=Wallpoet&display=swap");
+
 :root {
   --body-gradient: linear-gradient(
     0deg,
     rgba(58, 64, 74, 1) 0%,
-    rgba(52, 62, 89, 1) 75%,
+    rgba(52, 62, 89, 1) 25%,
     rgba(52, 62, 89, 1) 100%
   );
 
@@ -26,8 +20,6 @@
   --clr-primary-hover: #223144;
   --clr-secondary: #293c55;
   --clr-tertiary: #c5dcff;
-  /* --clr-black: #223144; */
-  /* --clr-blue: #3f8fc3; */
   --ff-primary: "Cabin", sans-serif;
   --ff-secondary: "Raleway", sans-serif;
   --ff-tertiary: "Open Sans", sans-serif;
@@ -53,17 +45,17 @@ html {
     font-size: 70%;
   }
 }
-@media (max-width: 1024px) {
+@media (max-width: 1050px) {
   html {
     font-size: 55%;
   }
 }
 
-@media screen and (max-width: 450px) {
+/* @media screen and (max-width: 450px) {
   html {
     font-size: 48%;
   }
-}
+} */
 body {
   /* font-family: "Raleway", sans-serif; */
   font-size: 1.6rem;
@@ -72,17 +64,23 @@ body {
   background-repeat: no-repeat;
   font-family: var(--ff-primary);
   min-height: 110vh;
+  /* padding: 3rem 12rem; */
+  /* padding: ; */
 }
+
 h1 {
   font-weight: 400;
-  letter-spacing: 1px;
+  text-align: center;
+  letter-spacing: 2px;
+  margin-bottom: 2rem;
+  font-size: 3.3rem;
 }
 h2 {
   font-weight: 400;
   letter-spacing: 1px;
 }
 .card {
-  padding: 1rem 2rem 2rem;
+  /* padding: 1rem 2rem 2rem; */
   font-family: var(--ff-primary);
   background-color: var(--clr-primary);
   border-radius: 15px;

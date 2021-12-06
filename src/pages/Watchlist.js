@@ -2,6 +2,7 @@ import React from "react";
 import { useUserContext } from "../contexts/userContext";
 import Table from "../components/Table";
 import styled from "styled-components";
+import { MainWithPadding } from "../utils/commonPadding";
 
 const Watchlist = () => {
   const { allUsers, currentUser } = useUserContext();
@@ -22,9 +23,15 @@ const Watchlist = () => {
 };
 
 export default Watchlist;
-const Wrapper = styled.div`
-  & {
-    padding: 0 max(12rem, 2vw);
+const Wrapper = styled(MainWithPadding)`
+  h1 {
+    text-align: center;
+    letter-spacing: 2px;
+    margin-bottom: 2rem;
+    font-size: 3.3rem;
+  }
+  .description {
+    display: none;
   }
   .empty_label {
     text-align: center;

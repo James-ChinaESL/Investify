@@ -51,7 +51,8 @@ const user_reducer = (state, action) => {
       }),
       allPrices: state.allPrices.find((stock) => stock.symbol === symbol)
         ? state.allPrices.map((stock) => {
-            if (stock.symbol === symbol) return { symbol, price };
+            if (stock.symbol === symbol)
+              return { symbol, price, prevClose: stock.prevClose };
             return stock;
           })
         : state.allPrices.concat({ symbol, price }),

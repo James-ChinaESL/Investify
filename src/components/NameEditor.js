@@ -4,8 +4,7 @@ import { createPortal } from "react-dom";
 import { AiOutlineSend } from "react-icons/ai";
 import Message from "./Message";
 import axios from "axios";
-
-let server = "http://localhost:5000";
+import { server } from "../utils/fetchOptions";
 
 const NameEditor = ({ close, editName, currentUser }) => {
   const [name, setName] = useState(currentUser.userName);

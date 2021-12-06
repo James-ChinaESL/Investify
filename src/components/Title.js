@@ -33,7 +33,6 @@ const Wrapper = styled.div`
       cursor: default;
       letter-spacing: 2px;
       font-size: ${({ small }) => {
-        console.log(small);
         return small ? "2.7rem" : "4rem";
       }};
       -webkit-background-clip: text;
