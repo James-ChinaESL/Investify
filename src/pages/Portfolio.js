@@ -29,7 +29,6 @@ const Portfolio = () => {
   const [user, setUser] = useState();
   useEffect(() => {
     if (!allUsers) return;
-    // if (!user?.userName === name) {
     setUser(
       allUsers.find((user) => {
         return user.userName.toLowerCase() === name;
@@ -37,7 +36,7 @@ const Portfolio = () => {
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [name, allPrices]);
-  if (!user) return <Spinner />;
+  if (!user || user.userName.toLowerCase() !== name) return <Spinner />;
   const rank =
     allUsers
       .sort((a, b) => {

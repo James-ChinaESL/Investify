@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { usdPlus, usdNoPlus, percent } from "../utils/formatNumbersForUI";
 import { Link } from "react-router-dom";
@@ -90,6 +90,7 @@ const HoldingsTable = ({ user }) => {
     setHoldings(sortedHoldings);
     setSortedBy(type + order);
   };
+  useEffect(() => {}, [user]);
   return (
     <Wrapper>
       <table className='holdings-table'>
