@@ -23,10 +23,11 @@ import { useStocksContext } from "../contexts/stocksContext";
 
 export default function Table({ type, list }) {
   const { groupsContext } = useStocksContext();
+
   const [tableStocks, setTableStocks] = useState([]);
-  const [description, setDescription] = useState("");
   const [isLoading, setIsloading] = useState();
   const [sortedBy, setSortedBy] = useState();
+  const [description, setDescription] = useState("");
   const [initialOrder, setInitialOrder] = useState([]);
 
   const specialStocksUrls = {
@@ -36,60 +37,72 @@ export default function Table({ type, list }) {
     dayLosers: urlDayLosers,
     undervaluedGrowth: urlUndervaluedGrowth,
   };
+  let formatedData;
   const fetchListData = async (list) => {
+    let data;
     try {
       const res = await axios.get(urlYahoo, optionsYahoo(list));
-      const data = { stocks: formatDataList(res), description: "" };
-      if (type === "popularStocks") {
-        data.description = popularStocksDescription;
+      formatedData = formatDataList(res);
+      if (list === popularStocks) {
+        setDescription(popularStocksDescription);
       }
-      if (type === "watchlistStocks") {
-        data.description = "";
-      }
-      return data;
+      // setPopularStocksData(formatedData);
     } catch (err) {
       alert(err);
       console.log(err);
     }
   };
 
-  const fetchSpecialStocksData = async () => {
+  const fetchSpecialStocksData = async (type) => {
     try {
       const res = await axios.get(
         specialStocksUrls[type],
         specialStocksOptions
       );
-      const data = {
-        stocks: formatDataSpecialStocks(res),
-        description: res.data.description.replace(".", ""),
-      };
-      return data;
+      formatedData = formatDataSpecialStocks(res);
+      setDescription(res.data.description.replace(".", ""));
     } catch (err) {
       alert(err);
       console.log(err);
     }
   };
 
-  const setDataForTable = async () => {
-    if (groupsContext[type][0]) {
-      setTableStocks(groupsContext[type][0].stocks);
-      setInitialOrder(groupsContext[type][0].stocks);
-      setDescription(groupsContext[type][0].description);
-      return;
-    }
+  const fetchData = async () => {
     setIsloading(true);
-    let data;
+
     if (list) {
-      data = await fetchListData(list);
-      groupsContext[type][1](data);
+      if (list === popularStocks) {
+        if (popularStocksData) {
+          setTableStocks(popularStocksData);
+        } else {
+          // try {
+          //   const res = await axios.get(urlYahoo, optionsYahoo(list));
+          //   formatedData = formatDataList(res);
+          //   if (list === popularStocks) {
+          //     setDescription(popularStocksDescription);
+          //   }
+          //   setPopularStocksData(formatedData);
+          // } catch (err) {
+          //   alert(err);
+          //   console.log(err);
+          // }
+        }
+      } else {
+      }
     }
-    if (!list) {
-      data = await fetchSpecialStocksData();
-      groupsContext[type][1](data);
+    if (type) {
+      // try {
+      //   const res = await axios.get(specialStocks[type], specialStocksOptions);
+      //   formatedData = formatDataSpecialStocks(res);
+      //   setDescription(res.data.description.replace(".", ""));
+      // } catch (err) {
+      //   alert(err);
+      //   console.log(err);
+      // }
     }
-    setTableStocks(data.stocks);
-    setInitialOrder(data.stocks);
-    setDescription(data.description);
+
+    setTableStocks(formatedData);
+    setInitialOrder(formatedData);
     setIsloading(false);
   };
 
@@ -138,7 +151,7 @@ export default function Table({ type, list }) {
     setSortedBy(type + order);
   };
   useEffect(() => {
-    setDataForTable();
+    fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [type, list]);
   return isLoading ? (
@@ -150,6 +163,7 @@ export default function Table({ type, list }) {
       <div className='description'>
         <h1>{description}</h1>
       </div>
+      {/* <h1 className='description'>"Famous companies we face every day"</h1> */}
       <div className='header-wrapper'>
         <div className='header-table'>
           <div className='rank'>Rank</div>

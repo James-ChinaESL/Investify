@@ -5,7 +5,7 @@ import Select from "@mui/material/Select";
 import { popularStocks } from "../utils/fetchOptions";
 import { v4 as uuidv4 } from "uuid";
 
-export default function SelectGroup({ content, setContent }) {
+export default function SelectGroup({ setContent }) {
   const [group, setGroup] = React.useState("popularStocks");
 
   const handleChange = (event) => {
@@ -47,16 +47,6 @@ export default function SelectGroup({ content, setContent }) {
           fontSize: "2rem",
           fontWeight: "bold",
           color: "#2b2d3e",
-
-          // ".css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input":
-          //   {
-          //     padding: "0.5rem 3rem",
-          //   },
-          // " .css-1gfq6dx-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline, .css-1d3z3hw-MuiOutlinedInput-notchedOutline ":
-          //   {
-          //     border: "none",
-          //   },
-
           ".MuiSelect-select.MuiSelect-outlined.MuiOutlinedInput-input.MuiInputBase-input":
             {
               padding: "0.5rem 3rem",

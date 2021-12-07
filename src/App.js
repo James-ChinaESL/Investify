@@ -17,8 +17,6 @@ const App = () => {
     <>
       <Router>
         {isAuthenticated && <Navbar />}
-        {/* <Navbar /> */}
-
         <Switch>
           <Route exact path='/'>
             {isAuthenticated ? <Stocks /> : <LandingPage />}

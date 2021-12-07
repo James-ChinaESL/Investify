@@ -14,7 +14,7 @@ export const formatDataList = (res) => {
   });
 };
 
-export const formatDataDayMovers = (res) => {
+export const formatDataSpecialStocks = (res) => {
   return res.data.quotes.map((stock) => {
     return {
       // ...stock,

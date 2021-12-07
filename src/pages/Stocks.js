@@ -4,20 +4,23 @@ import Table from "../components/Table";
 import { popularStocks } from "../utils/fetchOptions";
 import SelectGroup from "../components/SelectGroup";
 import { MainWithPadding } from "../utils/commonPadding";
+import { useStocksContext } from "../contexts/stocksContext";
 
 const Stocks = () => {
-  const [content, setContent] = useState({ list: popularStocks });
+  const { content, setContent } = useStocksContext();
 
   return (
     <Wrapper>
       <div className='select-container'>
-        <SelectGroup setContent={setContent} content={content} />
+        <SelectGroup setContent={setContent} />
       </div>
       <div className='grid'>
         <div className='buttons_container'>
           <button
             className={`btn ${content.list ? "active" : null}`}
-            onClick={() => setContent({ list: popularStocks })}
+            onClick={() =>
+              setContent({ type: "popularStocks", list: popularStocks })
+            }
           >
             Popular Stocks
           </button>

@@ -67,7 +67,7 @@ export const urlUndervaluedLargeCap =
 export const urlUndervaluedGrowth =
   " https://mboum-finance.p.rapidapi.com/co/collections/undervalued_growth_stocks";
 
-export const specilStocksOptions = {
+export const specialStocksOptions = {
   params: { start: "0" },
   headers: {
     "x-rapidapi-key": rakutenApiKey,

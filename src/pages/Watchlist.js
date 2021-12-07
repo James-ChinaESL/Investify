@@ -16,7 +16,7 @@ const Watchlist = () => {
       {watchlist.length === 0 ? (
         <h2 className='empty_label'>Your wathclist is currently empty</h2>
       ) : (
-        <Table list={watchlist.join(",")} />
+        <Table type='watchlistStocks' list={watchlist.join(",")} />
       )}
     </Wrapper>
   );

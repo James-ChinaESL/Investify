@@ -21,8 +21,6 @@ export const UserProvider = ({ children }) => {
   };
   const [state, dispatch] = useReducer(reducer, initialState);
   const { user: auth0User } = useAuth0();
-  console.log(useAuth0());
-
   const getInitialData = async () => {
     if (!auth0User) return;
     let allUsers;

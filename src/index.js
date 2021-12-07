@@ -5,6 +5,7 @@ import "./index.css";
 import { Auth0Provider } from "@auth0/auth0-react";
 import { UserProvider } from "./contexts/userContext";
 import { CalculationsProvider } from "./contexts/calculationsContext";
+import { StocksContextProvider } from "./contexts/stocksContext";
 
 ReactDOM.render(
   <Auth0Provider
@@ -15,7 +16,9 @@ ReactDOM.render(
   >
     <UserProvider>
       <CalculationsProvider>
-        <App />
+        <StocksContextProvider>
+          <App />
+        </StocksContextProvider>
       </CalculationsProvider>
     </UserProvider>
   </Auth0Provider>,
