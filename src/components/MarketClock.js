@@ -21,7 +21,7 @@ const MarketClock = React.memo(() => {
   const currentYear = newYorkTime.getFullYear();
   const currentMonth = newYorkTime.getMonth() + 1;
   const currentDay =
-    newYorkTime.getDate().length > 1
+    newYorkTime.getDate() >= 10
       ? newYorkTime.getDate()
       : "0" + newYorkTime.getDate();
 
