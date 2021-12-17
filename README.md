@@ -6,7 +6,7 @@
 - States are written with React hooks
 - React Router
 - Styled Components
-- Some parts of UI (not many) are taken from Material UI
+- Some parts of UI (not many) are made with Material UI
 - Backend is written with node, express, mongoose
 - About 4 free APIs with stock market data are being used here :) 
 
