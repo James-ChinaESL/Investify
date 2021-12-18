@@ -1,7 +1,7 @@
 ### View at https://investify-580b6.web.app/  
 ### Investify is a fully free online investing competition 
 
-#### I made this project completely from scratch. Idea, APIs, design (I am not good at it. Tried to do my best :) ).
+#### I made this project completely from scratch including idea, finding APIs, design.
 - React
 - States are written with React hooks
 - React Router
