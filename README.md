@@ -1,5 +1,7 @@
 ### View at https://investify-580b6.web.app/  
+### If you want to just view the project and don't create a new account you can use these credentials to login: email: test@mail.com, password: 111111
 ### Investify is a fully free online investing competition 
+###
 
 #### I made this project completely from scratch including idea, finding APIs, design.
 - React
